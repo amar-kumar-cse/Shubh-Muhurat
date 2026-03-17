@@ -1,0 +1,682 @@
+/* =============================================================
+   Shubh Muhurat Caterer – Premium Design System
+   Level 5 Engineering Grade CSS — 3D Depth Edition
+   ============================================================= */
+
+/* CSS Variables */
+:root {
+    --brand-orange: #ea961a;
+    --brand-blue: #008ccf;
+    --brand-green: #6db33f;
+    --brand-red: #e12729;
+    --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-depth-1: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --shadow-depth-2: 0 10px 25px -3px rgba(0,0,0,0.1), 0 4px 10px -4px rgba(0,0,0,0.08);
+    --shadow-depth-3: 0 25px 50px -12px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(234,150,26,0.08);
+    --shadow-cinematic: 0 30px 60px -15px rgba(0,0,0,0.2), 0 0 40px -10px rgba(234,150,26,0.1);
+}
+
+/* Base */
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f8fafc;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* ========================
+   Text & Color Utilities
+   ======================== */
+.text-brand-orange { color: var(--brand-orange); }
+.bg-brand-orange { background-color: var(--brand-orange); }
+.text-brand-blue { color: var(--brand-blue); }
+.bg-brand-blue { background-color: var(--brand-blue); }
+.text-brand-green { color: var(--brand-green); }
+.bg-brand-green { background-color: var(--brand-green); }
+.text-brand-red { color: var(--brand-red); }
+.bg-brand-red { background-color: var(--brand-red); }
+
+.text-shadow-black {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, var(--brand-orange), var(--brand-red));
+}
+
+/* ========================
+   Glassmorphism System
+   ======================== */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-dark {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-stat {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.4s var(--transition-smooth);
+}
+
+.glass-stat:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(234, 150, 26, 0.3);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(234, 150, 26, 0.15);
+}
+
+/* ========================
+   3D Card Effects — Core
+   ======================== */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+.card-3d {
+    transition: transform 0.15s ease, box-shadow 0.4s var(--transition-smooth);
+    transform-style: preserve-3d;
+    background: white;
+    border-radius: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.card-3d:hover {
+    box-shadow: var(--shadow-cinematic);
+}
+
+/* ========================
+   Premium Menu Card — 3D Depth System
+   ======================== */
+.menu-card-3d {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.menu-card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 1.25rem;
+    background: white;
+    position: relative;
+    transition: transform 0.4s var(--transition-smooth), box-shadow 0.5s var(--transition-smooth);
+    box-shadow: var(--shadow-depth-1);
+}
+
+.menu-card-inner:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-depth-3);
+    border-color: rgba(234, 150, 26, 0.15);
+}
+
+/* Image Wrapper */
+.menu-card-img-wrap {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+/* Image */
+.menu-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--transition-smooth), filter 0.3s ease;
+}
+
+.menu-card-inner:hover .menu-card-img {
+    transform: scale(1.12);
+}
+
+/* Dark Gradient Overlay */
+.menu-card-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.65) 0%,
+        rgba(0, 0, 0, 0.15) 40%,
+        transparent 100%
+    );
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Shine / Gloss Sweep */
+.menu-card-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 40%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 60%,
+        transparent 100%
+    );
+    background-size: 250% 100%;
+    background-position: 200% 0;
+    transition: background-position 0.8s var(--transition-smooth);
+}
+
+.menu-card-inner:hover .menu-card-shine {
+    background-position: -100% 0;
+}
+
+/* Category Badge */
+.menu-card-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 4px 14px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* VEG / NON-VEG Badges */
+.veg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #15803d;
+    background: rgba(220, 252, 231, 0.9);
+    backdrop-filter: blur(6px);
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    letter-spacing: 0.05em;
+}
+
+.nonveg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #b91c1c;
+    background: rgba(254, 226, 226, 0.9);
+    backdrop-filter: blur(6px);
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(252, 165, 165, 0.3);
+    letter-spacing: 0.05em;
+}
+
+/* Card Body */
+.menu-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 20;
+    background: white;
+}
+
+/* Title */
+.menu-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.3;
+    margin-bottom: 0.35rem;
+    transition: color 0.3s ease;
+}
+
+.menu-card-inner:hover .menu-card-title {
+    color: var(--brand-orange);
+}
+
+/* Description */
+.menu-card-desc {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Meta Bar */
+.menu-card-meta {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.meta-item i {
+    font-size: 0.7rem;
+}
+
+.meta-item:first-child i {
+    color: var(--brand-blue);
+}
+
+.meta-spice i {
+    color: #ef4444;
+}
+
+/* 3D Glow Border — Bottom Accent */
+.menu-card-glow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--brand-orange), var(--brand-red), var(--brand-blue));
+    border-radius: 0 0 1.25rem 1.25rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.menu-card-inner:hover .menu-card-glow {
+    opacity: 1;
+}
+
+/* ========================
+   Service Card 3D Depth
+   ======================== */
+.service-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.service-card .relative {
+    transition: transform 0.5s var(--transition-smooth), box-shadow 0.5s var(--transition-smooth);
+    box-shadow: var(--shadow-depth-2);
+}
+
+.service-card:hover .relative {
+    box-shadow: var(--shadow-cinematic);
+}
+
+/* ========================
+   Hero Particles
+   ======================== */
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(234, 150, 26, 0.6);
+    border-radius: 50%;
+    animation: particle-float linear infinite;
+}
+.particle-1 { left: 10%; top: 20%; animation-duration: 8s; animation-delay: 0s; width: 4px; height: 4px; }
+.particle-2 { left: 30%; top: 60%; animation-duration: 10s; animation-delay: 1s; width: 6px; height: 6px; }
+.particle-3 { left: 50%; top: 30%; animation-duration: 7s; animation-delay: 2s; width: 3px; height: 3px; }
+.particle-4 { left: 70%; top: 70%; animation-duration: 9s; animation-delay: 0.5s; width: 5px; height: 5px; }
+.particle-5 { left: 85%; top: 40%; animation-duration: 11s; animation-delay: 3s; width: 4px; height: 4px; }
+.particle-6 { left: 20%; top: 80%; animation-duration: 6s; animation-delay: 1.5s; width: 7px; height: 7px; }
+
+@keyframes particle-float {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+}
+
+/* ========================
+   Animations
+   ======================== */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+    50%      { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95) rotateX(8deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0);
+    }
+}
+
+.animate-fadeInDown {
+    animation: fadeInDown 0.8s var(--transition-smooth) forwards;
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 0.8s 0.3s var(--transition-smooth) forwards;
+    opacity: 0;
+}
+
+.floating {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* ========================
+   Scroll Reveal — 3D Enhanced
+   ======================== */
+.reveal-section {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+    transition: opacity 0.7s var(--transition-smooth), transform 0.7s var(--transition-smooth);
+}
+
+.reveal-section.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* ========================
+   Nav Styles
+   ======================== */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--brand-orange), var(--brand-red));
+    transition: width 0.3s var(--transition-smooth);
+    border-radius: 2px;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* ========================
+   Dropdown — 3D Enhanced
+   ======================== */
+.dropdown-container {
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) rotateX(-5deg);
+    transform-origin: top center;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-depth-3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.35s var(--transition-smooth);
+    min-width: 260px;
+    z-index: 100;
+    padding: 0.75rem;
+    overflow: hidden;
+}
+
+.dropdown-container:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(8px) rotateX(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    color: #374151;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background: linear-gradient(135deg, rgba(234, 150, 26, 0.08), rgba(234, 150, 26, 0.04));
+    color: var(--brand-orange);
+    transform: translateX(4px);
+}
+
+.dropdown-icon-animate {
+    transition: transform 0.3s ease;
+}
+
+.dropdown-container:hover .dropdown-icon-animate {
+    transform: rotate(180deg);
+}
+
+/* Mobile Menu */
+#mobile-menu {
+    transition: max-height 0.4s var(--transition-smooth), opacity 0.4s ease;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+#mobile-menu.open {
+    max-height: 600px;
+    opacity: 1;
+}
+
+.mobile-dropdown-content {
+    display: none;
+    padding-left: 1rem;
+    margin-bottom: 10px;
+}
+
+.mobile-dropdown-content.show {
+    display: block;
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* ========================
+   Forms — 3D Focus States
+   ======================== */
+input, textarea, select {
+    transition: all 0.3s var(--transition-smooth);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--brand-orange) !important;
+    background-color: white !important;
+    box-shadow: 0 0 0 4px rgba(234, 150, 26, 0.12), 0 4px 12px rgba(234, 150, 26, 0.08);
+    transform: translateY(-2px);
+}
+
+/* ========================
+   Scrollbar
+   ======================== */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--brand-orange), var(--brand-red));
+    border-radius: 6px;
+    border: 2px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--brand-blue), var(--brand-green));
+}
+
+/* Hide scrollbar for testimonials */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ========================
+   Loading Skeleton — 3D
+   ======================== */
+.skeleton {
+    background: linear-gradient(90deg, #e5e7eb 25%, #d1d5db 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 1rem;
+}
+
+/* ========================
+   WhatsApp Float Button
+   ======================== */
+.whatsapp-float {
+    animation: pulse-glow 2s infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.whatsapp-float:hover {
+    transform: scale(1.15) !important;
+}
+.whatsapp-float::before {
+    content: 'Chat with us!';
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    color: #333;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.whatsapp-float:hover::before {
+    opacity: 1;
+}
+
+/* ========================
+   Menu Tab Buttons — 3D Style
+   ======================== */
+.menu-tab {
+    transition: all 0.3s var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-tab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(234, 150, 26, 0.2);
+}
+
+.menu-tab.bg-brand-orange {
+    box-shadow: 0 6px 20px rgba(234, 150, 26, 0.35);
+}
+
+/* ========================
+   Section Depth Accents
+   ======================== */
+section {
+    position: relative;
+}
+
+/* Testimonial cards 3D lift */
+.glass-dark {
+    transition: all 0.4s var(--transition-smooth);
+}
+
+.glass-dark:hover {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(234, 150, 26, 0.2);
+}
+
+/* ========================
+   Responsive Fixes
+   ======================== */
+@media (max-width: 768px) {
+    .glass-stat {
+        padding: 0.75rem;
+    }
+    
+    .menu-card-img-wrap {
+        height: 180px;
+    }
+    
+    .menu-card-body {
+        padding: 1rem 1.15rem 1.15rem;
+    }
+    
+    .menu-card-title {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-card-img-wrap {
+        height: 160px;
+    }
+}
