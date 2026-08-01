@@ -17,7 +17,8 @@ A production-ready backend system built to digitize and automate catering busine
 - **Contact & Inquiries** — Priority-based inquiry tracking with status management (New → In Progress → Resolved)
 - **Booking Statistics** — Real-time stats dashboard for business insights
 - **Pagination & Filtering** — All endpoints support pagination, date range filters, and status filters
-- **WhatsApp Notifications** — Automated booking confirmation messages via WhatsApp API
+- **Authentication & Authorization** — JWT-based auth system with role-based access control
+- **Security Features** — Rate limiting, helmet headers, spam protection, and NoSQL injection prevention
 
 ---
 
@@ -29,7 +30,7 @@ A production-ready backend system built to digitize and automate catering busine
 | Framework | Express.js |
 | Database | MongoDB |
 | API Style | RESTful |
-| Notifications | WhatsApp API |
+| Authentication | JWT |
 
 ---
 
@@ -150,7 +151,8 @@ Create a `.env` file in the root:
 ```env
 MONGODB_URI=mongodb://127.0.0.1:27017/shubh_muhurat
 PORT=3000
-WHATSAPP_API_KEY=your_whatsapp_api_key
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+ALLOWED_ORIGINS=http://localhost:3000,https://yourdomain.com
 ```
 
 ---

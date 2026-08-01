@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 const errorHandler = require('./middleware/errorHandler');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,7 +39,12 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Serve static files from public directory only
+
+// NoSQL injection protection
+app.use(mongoSanitize());
+
+// Serve static files from public directory only
+app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI;
