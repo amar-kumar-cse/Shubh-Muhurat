@@ -1,19 +1,28 @@
 const MenuItem = require('../models/MenuItem');
 
 // Get all menu items with filtering
-exports.getAllMenuItems = async (req, res) => {
+exports.getAllMenuItems = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 50;
+        const limit = Math.min(parseInt(req.query.limit) || 50, 100);
         const skip = (page - 1) * limit;
 
-        // Build filter object
+        // Build filter object - sanitize to prevent NoSQL injection
         const filter = {};
-        if (req.query.category) filter.category = req.query.category;
-        if (req.query.menuType) filter.menuType = req.query.menuType;
+        const allowedCategories = ['Starters', 'Main Course', 'Desserts', 'Beverages', 'Snacks', 'Special Items'];
+        if (req.query.category && allowedCategories.includes(req.query.category)) {
+            filter.category = req.query.category;
+        }
+        const allowedMenuTypes = ['Veg', 'Non-Veg', 'Both'];
+        if (req.query.menuType && allowedMenuTypes.includes(req.query.menuType)) {
+            filter.menuType = req.query.menuType;
+        }
         if (req.query.isVegetarian !== undefined) filter.isVegetarian = req.query.isVegetarian === 'true';
         if (req.query.isAvailable !== undefined) filter.isAvailable = req.query.isAvailable === 'true';
-        if (req.query.maxPrice) filter.price = { $lte: parseInt(req.query.maxPrice) };
+        if (req.query.maxPrice) {
+            const maxPrice = parseInt(req.query.maxPrice);
+            if (!isNaN(maxPrice) && maxPrice > 0) filter.price = { $lte: maxPrice };
+        }
 
         const menuItems = await MenuItem.find(filter)
             .sort({ category: 1, price: 1 })
@@ -33,16 +42,12 @@ exports.getAllMenuItems = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching menu items',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get single menu item by ID
-exports.getMenuItemById = async (req, res) => {
+exports.getMenuItemById = async (req, res, next) => {
     try {
         const menuItem = await MenuItem.findById(req.params.id);
 
@@ -58,16 +63,12 @@ exports.getMenuItemById = async (req, res) => {
             data: menuItem
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching menu item',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Create new menu item
-exports.createMenuItem = async (req, res) => {
+exports.createMenuItem = async (req, res, next) => {
     try {
         const newMenuItem = new MenuItem(req.body);
         await newMenuItem.save();
@@ -78,28 +79,16 @@ exports.createMenuItem = async (req, res) => {
             data: newMenuItem
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error creating menu item',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Update menu item by ID
-exports.updateMenuItem = async (req, res) => {
+exports.updateMenuItem = async (req, res, next) => {
     try {
         const menuItem = await MenuItem.findByIdAndUpdate(
             req.params.id,
-            { ...req.body, updatedAt: Date.now() },
+            req.body,
             { new: true, runValidators: true }
         );
 
@@ -116,24 +105,12 @@ exports.updateMenuItem = async (req, res) => {
             data: menuItem
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error updating menu item',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Delete menu item by ID
-exports.deleteMenuItem = async (req, res) => {
+exports.deleteMenuItem = async (req, res, next) => {
     try {
         const menuItem = await MenuItem.findByIdAndDelete(req.params.id);
 
@@ -149,16 +126,12 @@ exports.deleteMenuItem = async (req, res) => {
             message: 'Menu item deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error deleting menu item',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get menu categories
-exports.getCategories = async (req, res) => {
+exports.getCategories = async (req, res, next) => {
     try {
         const categories = await MenuItem.distinct('category');
         res.json({
@@ -166,10 +139,6 @@ exports.getCategories = async (req, res) => {
             data: categories
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching categories',
-            error: error.message
-        });
+        next(error);
     }
 };

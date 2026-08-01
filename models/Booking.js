@@ -57,14 +57,6 @@ const bookingSchema = new mongoose.Schema({
     totalAmount: {
         type: Number,
         min: 0
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
 }, {
     timestamps: true

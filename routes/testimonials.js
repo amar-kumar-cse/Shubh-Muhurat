@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const testimonialController = require('../controllers/testimonialController');
+const spamProtection = require('../middleware/spamProtection');
+const { protect, authorize } = require('../middleware/auth');
 
 // Testimonial routes
 router.get('/', testimonialController.getAllTestimonials); // Public - approved only
-router.get('/admin', testimonialController.getAllTestimonialsAdmin); // Admin - all testimonials
-router.get('/rating', testimonialController.getAverageRating);
-router.get('/:id', testimonialController.getTestimonialById);
-router.post('/', testimonialController.createTestimonial);
-router.put('/:id', testimonialController.updateTestimonial);
-router.delete('/:id', testimonialController.deleteTestimonial);
+router.get('/admin', protect, authorize('admin'), testimonialController.getAllTestimonialsAdmin); // Admin - all testimonials
+router.get('/rating', testimonialController.getAverageRating); // Public
+router.get('/:id', testimonialController.getTestimonialById); // Public
+router.post('/', spamProtection, testimonialController.createTestimonial); // Public - for testimonial form
+router.put('/:id', protect, authorize('admin'), testimonialController.updateTestimonial);
+router.delete('/:id', protect, authorize('admin'), testimonialController.deleteTestimonial);
 
 module.exports = router;

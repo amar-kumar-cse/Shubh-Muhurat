@@ -1,20 +1,32 @@
 const Booking = require('../models/Booking');
 
 // Get all bookings with pagination and filtering
-exports.getAllBookings = async (req, res) => {
+exports.getAllBookings = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = Math.min(parseInt(req.query.limit) || 10, 100);
         const skip = (page - 1) * limit;
 
-        // Build filter object
+        // Build filter object - sanitize to prevent NoSQL injection
         const filter = {};
-        if (req.query.status) filter.status = req.query.status;
-        if (req.query.eventType) filter.eventType = req.query.eventType;
+        const allowedStatuses = ['Pending', 'Confirmed', 'Cancelled', 'Completed'];
+        if (req.query.status && allowedStatuses.includes(req.query.status)) {
+            filter.status = req.query.status;
+        }
+        const allowedEventTypes = ['Wedding', 'Corporate Event', 'Birthday Party', 'Anniversary', 'Private Party', 'Other'];
+        if (req.query.eventType && allowedEventTypes.includes(req.query.eventType)) {
+            filter.eventType = req.query.eventType;
+        }
         if (req.query.dateFrom || req.query.dateTo) {
             filter.date = {};
-            if (req.query.dateFrom) filter.date.$gte = new Date(req.query.dateFrom);
-            if (req.query.dateTo) filter.date.$lte = new Date(req.query.dateTo);
+            if (req.query.dateFrom) {
+                const dateFrom = new Date(req.query.dateFrom);
+                if (!isNaN(dateFrom.getTime())) filter.date.$gte = dateFrom;
+            }
+            if (req.query.dateTo) {
+                const dateTo = new Date(req.query.dateTo);
+                if (!isNaN(dateTo.getTime())) filter.date.$lte = dateTo;
+            }
         }
 
         const bookings = await Booking.find(filter)
@@ -35,16 +47,12 @@ exports.getAllBookings = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching bookings',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get single booking by ID
-exports.getBookingById = async (req, res) => {
+exports.getBookingById = async (req, res, next) => {
     try {
         const booking = await Booking.findById(req.params.id);
 
@@ -60,16 +68,12 @@ exports.getBookingById = async (req, res) => {
             data: booking
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching booking',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Create new booking
-exports.createBooking = async (req, res) => {
+exports.createBooking = async (req, res, next) => {
     try {
         const newBooking = new Booking(req.body);
         await newBooking.save();
@@ -80,28 +84,16 @@ exports.createBooking = async (req, res) => {
             data: newBooking
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error creating booking',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Update booking by ID
-exports.updateBooking = async (req, res) => {
+exports.updateBooking = async (req, res, next) => {
     try {
         const booking = await Booking.findByIdAndUpdate(
             req.params.id,
-            { ...req.body, updatedAt: Date.now() },
+            req.body,
             { new: true, runValidators: true }
         );
 
@@ -118,24 +110,12 @@ exports.updateBooking = async (req, res) => {
             data: booking
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error updating booking',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Delete booking by ID
-exports.deleteBooking = async (req, res) => {
+exports.deleteBooking = async (req, res, next) => {
     try {
         const booking = await Booking.findByIdAndDelete(req.params.id);
 
@@ -151,16 +131,12 @@ exports.deleteBooking = async (req, res) => {
             message: 'Booking deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error deleting booking',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get booking statistics
-exports.getBookingStats = async (req, res) => {
+exports.getBookingStats = async (req, res, next) => {
     try {
         const totalBookings = await Booking.countDocuments();
         const pendingBookings = await Booking.countDocuments({ status: 'Pending' });
@@ -177,10 +153,6 @@ exports.getBookingStats = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching statistics',
-            error: error.message
-        });
+        next(error);
     }
 };

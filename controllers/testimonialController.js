@@ -1,16 +1,22 @@
 const Testimonial = require('../models/Testimonial');
 
 // Get all testimonials (approved only for public)
-exports.getAllTestimonials = async (req, res) => {
+exports.getAllTestimonials = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = Math.min(parseInt(req.query.limit) || 10, 100);
         const skip = (page - 1) * limit;
 
-        // Build filter - only show approved for public
+        // Build filter - only show approved for public, sanitize to prevent NoSQL injection
         const filter = { isApproved: true };
-        if (req.query.eventType) filter.eventType = req.query.eventType;
-        if (req.query.rating) filter.rating = { $gte: parseInt(req.query.rating) };
+        const allowedEventTypes = ['Wedding', 'Corporate Event', 'Birthday Party', 'Anniversary', 'Private Party', 'Other'];
+        if (req.query.eventType && allowedEventTypes.includes(req.query.eventType)) {
+            filter.eventType = req.query.eventType;
+        }
+        if (req.query.rating) {
+            const rating = parseInt(req.query.rating);
+            if (!isNaN(rating) && rating >= 1 && rating <= 5) filter.rating = { $gte: rating };
+        }
         if (req.query.isFeatured !== undefined) filter.isFeatured = req.query.isFeatured === 'true';
 
         const testimonials = await Testimonial.find(filter)
@@ -32,19 +38,15 @@ exports.getAllTestimonials = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching testimonials',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get all testimonials (admin - includes unapproved)
-exports.getAllTestimonialsAdmin = async (req, res) => {
+exports.getAllTestimonialsAdmin = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 20;
+        const limit = Math.min(parseInt(req.query.limit) || 20, 100);
         const skip = (page - 1) * limit;
 
         const filter = {};
@@ -68,16 +70,12 @@ exports.getAllTestimonialsAdmin = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching testimonials',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get single testimonial by ID
-exports.getTestimonialById = async (req, res) => {
+exports.getTestimonialById = async (req, res, next) => {
     try {
         const testimonial = await Testimonial.findById(req.params.id);
 
@@ -93,16 +91,12 @@ exports.getTestimonialById = async (req, res) => {
             data: testimonial
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching testimonial',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Create new testimonial
-exports.createTestimonial = async (req, res) => {
+exports.createTestimonial = async (req, res, next) => {
     try {
         const newTestimonial = new Testimonial(req.body);
         await newTestimonial.save();
@@ -113,28 +107,16 @@ exports.createTestimonial = async (req, res) => {
             data: newTestimonial
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error creating testimonial',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Update testimonial by ID
-exports.updateTestimonial = async (req, res) => {
+exports.updateTestimonial = async (req, res, next) => {
     try {
         const testimonial = await Testimonial.findByIdAndUpdate(
             req.params.id,
-            { ...req.body, updatedAt: Date.now() },
+            req.body,
             { new: true, runValidators: true }
         );
 
@@ -151,24 +133,12 @@ exports.updateTestimonial = async (req, res) => {
             data: testimonial
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error updating testimonial',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Delete testimonial by ID
-exports.deleteTestimonial = async (req, res) => {
+exports.deleteTestimonial = async (req, res, next) => {
     try {
         const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
 
@@ -184,16 +154,12 @@ exports.deleteTestimonial = async (req, res) => {
             message: 'Testimonial deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error deleting testimonial',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get average rating
-exports.getAverageRating = async (req, res) => {
+exports.getAverageRating = async (req, res, next) => {
     try {
         const result = await Testimonial.aggregate([
             { $match: { isApproved: true } },
@@ -217,10 +183,6 @@ exports.getAverageRating = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching rating statistics',
-            error: error.message
-        });
+        next(error);
     }
 };

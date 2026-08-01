@@ -1,16 +1,22 @@
 const ContactInquiry = require('../models/ContactInquiry');
 
 // Get all contact inquiries
-exports.getAllInquiries = async (req, res) => {
+exports.getAllInquiries = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 20;
+        const limit = Math.min(parseInt(req.query.limit) || 20, 100);
         const skip = (page - 1) * limit;
 
-        // Build filter
+        // Build filter - sanitize to prevent NoSQL injection
         const filter = {};
-        if (req.query.status) filter.status = req.query.status;
-        if (req.query.priority) filter.priority = req.query.priority;
+        const allowedStatuses = ['New', 'Read', 'In Progress', 'Resolved'];
+        if (req.query.status && allowedStatuses.includes(req.query.status)) {
+            filter.status = req.query.status;
+        }
+        const allowedPriorities = ['Low', 'Medium', 'High', 'Urgent'];
+        if (req.query.priority && allowedPriorities.includes(req.query.priority)) {
+            filter.priority = req.query.priority;
+        }
 
         const inquiries = await ContactInquiry.find(filter)
             .sort({ priority: -1, createdAt: -1 })
@@ -30,16 +36,12 @@ exports.getAllInquiries = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching inquiries',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get single inquiry by ID
-exports.getInquiryById = async (req, res) => {
+exports.getInquiryById = async (req, res, next) => {
     try {
         const inquiry = await ContactInquiry.findById(req.params.id);
 
@@ -61,16 +63,12 @@ exports.getInquiryById = async (req, res) => {
             data: inquiry
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching inquiry',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Create new contact inquiry
-exports.createInquiry = async (req, res) => {
+exports.createInquiry = async (req, res, next) => {
     try {
         const newInquiry = new ContactInquiry(req.body);
         await newInquiry.save();
@@ -81,28 +79,16 @@ exports.createInquiry = async (req, res) => {
             data: newInquiry
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error creating inquiry',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Update inquiry by ID
-exports.updateInquiry = async (req, res) => {
+exports.updateInquiry = async (req, res, next) => {
     try {
         const inquiry = await ContactInquiry.findByIdAndUpdate(
             req.params.id,
-            { ...req.body, updatedAt: Date.now() },
+            req.body,
             { new: true, runValidators: true }
         );
 
@@ -119,24 +105,12 @@ exports.updateInquiry = async (req, res) => {
             data: inquiry
         });
     } catch (error) {
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: 'Validation failed',
-                errors: Object.values(error.errors).map(err => err.message)
-            });
-        }
-
-        res.status(500).json({
-            success: false,
-            message: 'Error updating inquiry',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Delete inquiry by ID
-exports.deleteInquiry = async (req, res) => {
+exports.deleteInquiry = async (req, res, next) => {
     try {
         const inquiry = await ContactInquiry.findByIdAndDelete(req.params.id);
 
@@ -152,16 +126,12 @@ exports.deleteInquiry = async (req, res) => {
             message: 'Inquiry deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error deleting inquiry',
-            error: error.message
-        });
+        next(error);
     }
 };
 
 // Get inquiry statistics
-exports.getInquiryStats = async (req, res) => {
+exports.getInquiryStats = async (req, res, next) => {
     try {
         const totalInquiries = await ContactInquiry.countDocuments();
         const newInquiries = await ContactInquiry.countDocuments({ status: 'New' });
@@ -178,10 +148,6 @@ exports.getInquiryStats = async (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching statistics',
-            error: error.message
-        });
+        next(error);
     }
 };

@@ -2,16 +2,42 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Security middleware
+app.use(helmet({
+    contentSecurityPolicy: false, // Disable CSP for simplicity with static files
+    crossOriginEmbedderPolicy: false
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+    message: {
+        success: false,
+        message: 'Too many requests from this IP, please try again later.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+// Apply rate limiting to API routes only
+app.use('/api', limiter);
+
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('.')); // Serve static files from current directory
+app.use(express.static('public')); // Serve static files from public directory only
 
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -33,8 +59,10 @@ const bookingRoutes = require('./routes/bookings');
 const menuRoutes = require('./routes/menu');
 const testimonialRoutes = require('./routes/testimonials');
 const contactRoutes = require('./routes/contact');
+const authRoutes = require('./routes/auth');
 
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/testimonials', testimonialRoutes);
