@@ -5,21 +5,24 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const errorHandler = require('./middleware/errorHandler');
+const { sanitizeXSS } = require('./middleware/sanitize');
 const path = require('path');
 const config = require('./config');
 
 const app = express();
 
-// Security middleware
-app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP for simplicity with static files
-    crossOriginEmbedderPolicy: false
+// Security headers with Helmet and HSTS
+app.use(helmet());
+app.use(helmet.hsts({
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: config.rateLimitWindowMs,
-    max: config.rateLimitMaxRequests,
+// Rate limiting setup
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: config.nodeEnv === 'test' ? 1000 : (config.rateLimitMaxRequests || 100),
     message: {
         success: false,
         message: 'Too many requests from this IP, please try again later.'
@@ -28,37 +31,64 @@ const limiter = rateLimit({
     legacyHeaders: false
 });
 
-// Apply rate limiting to API routes only
-app.use('/api', limiter);
+const strictLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: config.nodeEnv === 'test' ? 1000 : 5,
+    message: {
+        success: false,
+        message: 'Too many attempts, please try again later.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
 
-// Middleware
-app.use(cors({
-    origin: config.allowedOrigins,
-    credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// NoSQL injection protection
-app.use((req, res, next) => {
-    if (req.body) {
-        mongoSanitize.sanitize(req.body);
-    }
-
-    if (req.params) {
-        mongoSanitize.sanitize(req.params);
-    }
-
+// Apply rate limiting
+app.use('/api', apiLimiter);
+app.use('/api/auth/login', strictLimiter);
+app.use('/api/contact', (req, res, next) => {
+    if (req.method === 'POST') return strictLimiter(req, res, next);
     next();
 });
 
-// Serve static files from public directory only
+// Restricted CORS
+const allowedOrigin = config.nodeEnv === 'production'
+    ? (config.allowedOrigins && config.allowedOrigins !== '*' ? config.allowedOrigins : 'https://yourdomain.com')
+    : '*';
+
+app.use(cors({
+    origin: allowedOrigin,
+    credentials: true
+}));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// NoSQL injection protection (Express 5 compatible)
+app.use((req, res, next) => {
+    if (req.body && typeof req.body === 'object') {
+        mongoSanitize.sanitize(req.body);
+    }
+    if (req.params && typeof req.params === 'object') {
+        mongoSanitize.sanitize(req.params);
+    }
+    if (req.query && typeof req.query === 'object') {
+        mongoSanitize.sanitize(req.query);
+    }
+    next();
+});
+
+// XSS input sanitization
+app.use('/api', sanitizeXSS);
+
+// Serve static files securely from public directory only
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
 const connectDatabase = async () => {
-    await mongoose.connect(config.mongoUri);
-    console.log('✅ Connected to MongoDB');
+    if (config.mongoUri) {
+        await mongoose.connect(config.mongoUri);
+        console.log('✅ Connected to MongoDB');
+    }
 };
 
 // Import Routes

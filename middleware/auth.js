@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');
 const User = require('../models/User');
+const config = require('../config');
 
 // Protect routes - verify JWT token
 const protect = async (req, res, next) => {
@@ -21,24 +23,30 @@ const protect = async (req, res, next) => {
 
         try {
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+            const decoded = jwt.verify(token, config.jwtSecret);
 
-            // Get user from token
-            req.user = await User.findById(decoded.id).select('-password');
+            // Get admin or user from token
+            let account = await Admin.findById(decoded.id).select('-password');
+            if (!account) {
+                account = await User.findById(decoded.id).select('-password');
+            }
 
-            if (!req.user) {
+            if (!account) {
                 return res.status(401).json({
                     success: false,
                     message: 'User not found'
                 });
             }
 
-            if (!req.user.isActive) {
+            if (!account.isActive) {
                 return res.status(401).json({
                     success: false,
                     message: 'User account is inactive'
                 });
             }
+
+            req.admin = account;
+            req.user = account;
 
             next();
         } catch (error) {
@@ -55,10 +63,11 @@ const protect = async (req, res, next) => {
 // Grant access to specific roles
 const authorize = (...roles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
+        const currentRole = (req.admin || req.user)?.role;
+        if (!currentRole || !roles.includes(currentRole)) {
             return res.status(403).json({
                 success: false,
-                message: `User role '${req.user.role}' is not authorized to access this route`
+                message: 'Not authorized for this action'
             });
         }
         next();

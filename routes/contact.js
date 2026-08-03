@@ -11,10 +11,10 @@ const contactSubmissionLimiter = createSubmissionLimiter('Too many contact submi
 
 // Contact inquiry routes
 router.get('/', protect, authorize('admin', 'staff'), contactController.getAllInquiries);
-router.get('/stats', protect, authorize('admin'), contactController.getInquiryStats);
+router.get('/stats', protect, authorize('admin', 'staff'), contactController.getInquiryStats);
 router.get('/:id', protect, authorize('admin', 'staff'), contactController.getInquiryById);
 router.post('/', contactSubmissionLimiter, validate(contact.createInquirySchema), spamProtection, contactController.createInquiry); // Public - for contact form
-router.put('/:id', protect, authorize('admin'), validate(contact.updateInquirySchema), contactController.updateInquiry);
+router.put('/:id', protect, authorize('admin', 'staff'), validate(contact.updateInquirySchema), contactController.updateInquiry);
 router.delete('/:id', protect, authorize('admin'), contactController.deleteInquiry);
 
 module.exports = router;

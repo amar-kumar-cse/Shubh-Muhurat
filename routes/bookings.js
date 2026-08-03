@@ -12,11 +12,11 @@ const bookingSubmissionLimiter = createSubmissionLimiter('Too many booking submi
 // Booking routes
 router.get('/availability', bookingController.getAvailability);
 router.get('/', protect, authorize('admin', 'staff'), bookingController.getAllBookings);
-router.get('/stats', protect, authorize('admin'), bookingController.getBookingStats);
+router.get('/stats', protect, authorize('admin', 'staff'), bookingController.getBookingStats);
 router.get('/track/:trackingCode', bookingController.trackBooking);
 router.get('/:id', protect, authorize('admin', 'staff'), bookingController.getBookingById);
 router.post('/', bookingSubmissionLimiter, validate(booking.createBookingSchema), spamProtection, bookingController.createBooking); // Public - for booking form
-router.put('/:id', protect, authorize('admin'), validate(booking.updateBookingSchema), bookingController.updateBooking);
+router.put('/:id', protect, authorize('admin', 'staff'), validate(booking.updateBookingSchema), bookingController.updateBooking);
 router.delete('/:id', protect, authorize('admin'), bookingController.deleteBooking);
 
 module.exports = router;

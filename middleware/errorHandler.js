@@ -1,12 +1,15 @@
+const logger = require('../utils/logger');
+
 // Global error handling middleware
 const errorHandler = (err, req, res, next) => {
     const isProduction = process.env.NODE_ENV === 'production';
 
-    if (isProduction) {
-        console.error('Error:', err.message);
-    } else {
-        console.error('Error:', err.stack);
-    }
+    // Log full error details to Winston logger
+    logger.error(`${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`, {
+        stack: err.stack,
+        body: req.body,
+        query: req.query
+    });
 
     // Mongoose validation error
     if (err.name === 'ValidationError') {

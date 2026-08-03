@@ -1,4 +1,6 @@
 module.exports = {
     pagination: require('./pagination'),
-    pick: require('./pick')
+    pick: require('./pick'),
+    logger: require('./logger')
 };
+
