@@ -1,39 +1,18 @@
-const ContactInquiry = require('../models/ContactInquiry');
+const services = require('../services');
+const { pagination } = require('../utils');
 
 // Get all contact inquiries
 exports.getAllInquiries = async (req, res, next) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = Math.min(parseInt(req.query.limit) || 20, 100);
-        const skip = (page - 1) * limit;
-
-        // Build filter - sanitize to prevent NoSQL injection
-        const filter = {};
-        const allowedStatuses = ['New', 'Read', 'In Progress', 'Resolved'];
-        if (req.query.status && allowedStatuses.includes(req.query.status)) {
-            filter.status = req.query.status;
-        }
-        const allowedPriorities = ['Low', 'Medium', 'High', 'Urgent'];
-        if (req.query.priority && allowedPriorities.includes(req.query.priority)) {
-            filter.priority = req.query.priority;
-        }
-
-        const inquiries = await ContactInquiry.find(filter)
-            .sort({ priority: -1, createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-
-        const total = await ContactInquiry.countDocuments(filter);
+        const { page, limit, skip } = pagination.getPagination(req.query);
+        const filter = services.contact.buildContactFilter(req.query);
+        const { inquiries, total } = await services.contact.getInquiries(filter, { page, limit, skip });
+        const paginationMeta = pagination.buildPaginationMeta(total, page, limit);
 
         res.json({
             success: true,
             data: inquiries,
-            pagination: {
-                currentPage: page,
-                totalPages: Math.ceil(total / limit),
-                totalItems: total,
-                itemsPerPage: limit
-            }
+            pagination: paginationMeta
         });
     } catch (error) {
         next(error);
@@ -43,19 +22,13 @@ exports.getAllInquiries = async (req, res, next) => {
 // Get single inquiry by ID
 exports.getInquiryById = async (req, res, next) => {
     try {
-        const inquiry = await ContactInquiry.findById(req.params.id);
+        const inquiry = await services.contact.getInquiryById(req.params.id);
 
         if (!inquiry) {
             return res.status(404).json({
                 success: false,
                 message: 'Inquiry not found'
             });
-        }
-
-        // Update status to 'Read' if it was 'New'
-        if (inquiry.status === 'New') {
-            inquiry.status = 'Read';
-            await inquiry.save();
         }
 
         res.json({
@@ -70,8 +43,7 @@ exports.getInquiryById = async (req, res, next) => {
 // Create new contact inquiry
 exports.createInquiry = async (req, res, next) => {
     try {
-        const newInquiry = new ContactInquiry(req.body);
-        await newInquiry.save();
+        const newInquiry = await services.contact.createInquiry(req.body);
 
         res.status(201).json({
             success: true,
@@ -86,11 +58,7 @@ exports.createInquiry = async (req, res, next) => {
 // Update inquiry by ID
 exports.updateInquiry = async (req, res, next) => {
     try {
-        const inquiry = await ContactInquiry.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
+        const inquiry = await services.contact.updateInquiry(req.params.id, req.body);
 
         if (!inquiry) {
             return res.status(404).json({
@@ -112,7 +80,7 @@ exports.updateInquiry = async (req, res, next) => {
 // Delete inquiry by ID
 exports.deleteInquiry = async (req, res, next) => {
     try {
-        const inquiry = await ContactInquiry.findByIdAndDelete(req.params.id);
+        const inquiry = await services.contact.deleteInquiry(req.params.id);
 
         if (!inquiry) {
             return res.status(404).json({
@@ -133,19 +101,11 @@ exports.deleteInquiry = async (req, res, next) => {
 // Get inquiry statistics
 exports.getInquiryStats = async (req, res, next) => {
     try {
-        const totalInquiries = await ContactInquiry.countDocuments();
-        const newInquiries = await ContactInquiry.countDocuments({ status: 'New' });
-        const inProgressInquiries = await ContactInquiry.countDocuments({ status: 'In Progress' });
-        const resolvedInquiries = await ContactInquiry.countDocuments({ status: 'Resolved' });
+        const stats = await services.contact.getInquiryStats();
 
         res.json({
             success: true,
-            data: {
-                total: totalInquiries,
-                new: newInquiries,
-                inProgress: inProgressInquiries,
-                resolved: resolvedInquiries
-            }
+            data: stats
         });
     } catch (error) {
         next(error);

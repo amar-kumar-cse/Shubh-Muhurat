@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { bookingStatus, eventTypes } = require('../constants');
 
 const bookingSchema = new mongoose.Schema({
     name: {
@@ -24,7 +25,7 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Event type is required'],
         enum: {
-            values: ['Wedding', 'Corporate Event', 'Birthday Party', 'Anniversary', 'Private Party', 'Other'],
+            values: eventTypes.ALL,
             message: '{VALUE} is not a valid event type'
         }
     },
@@ -33,6 +34,13 @@ const bookingSchema = new mongoose.Schema({
         required: [true, 'Number of guests is required'],
         min: [1, 'Must have at least 1 guest'],
         max: [10000, 'Guest count cannot exceed 10000']
+    },
+    venue: {
+        type: String,
+        required: [true, 'Venue is required'],
+        trim: true,
+        minlength: [2, 'Venue must be at least 2 characters long'],
+        maxlength: [150, 'Venue cannot exceed 150 characters']
     },
     date: {
         type: Date,
@@ -63,7 +71,7 @@ const bookingSchema = new mongoose.Schema({
 });
 
 // Index for better query performance
-bookingSchema.index({ date: 1, status: 1 });
+bookingSchema.index({ date: 1, venue: 1, status: 1 });
 bookingSchema.index({ email: 1 });
 bookingSchema.index({ createdAt: -1 });
 

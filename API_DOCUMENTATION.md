@@ -24,6 +24,7 @@ GET /api/bookings
 - `limit` (optional): Items per page (default: 10)
 - `status` (optional): Filter by status (Pending, Confirmed, Cancelled, Completed)
 - `eventType` (optional): Filter by event type
+- `venue` (optional): Filter by venue
 - `dateFrom` (optional): Filter events from date (YYYY-MM-DD)
 - `dateTo` (optional): Filter events to date (YYYY-MM-DD)
 
@@ -48,6 +49,7 @@ Content-Type: application/json
   "phone": "+91 9876543210",
   "eventType": "Wedding",
   "guests": 200,
+  "venue": "Grand Ballroom, Mumbai",
   "date": "2026-05-15",
   "requests": "Vegetarian menu only"
 }
@@ -218,7 +220,7 @@ GET /api/contact
 ```
 GET /api/contact/:id
 ```
-*Note: Automatically marks status as 'Read' if it was 'New'*
+*Note: Reading an inquiry no longer changes its status. Use the update endpoint to change status explicitly.*
 
 ### Create Contact Inquiry
 ```

@@ -62,14 +62,6 @@ const menuItemSchema = new mongoose.Schema({
         type: String,
         enum: ['Mild', 'Medium', 'Hot', 'Extra Hot', 'None'],
         default: 'Medium'
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
     }
 }, {
     timestamps: true

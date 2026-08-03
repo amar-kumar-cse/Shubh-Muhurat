@@ -1,45 +1,18 @@
-const MenuItem = require('../models/MenuItem');
+const services = require('../services');
+const { pagination } = require('../utils');
 
 // Get all menu items with filtering
 exports.getAllMenuItems = async (req, res, next) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = Math.min(parseInt(req.query.limit) || 50, 100);
-        const skip = (page - 1) * limit;
-
-        // Build filter object - sanitize to prevent NoSQL injection
-        const filter = {};
-        const allowedCategories = ['Starters', 'Main Course', 'Desserts', 'Beverages', 'Snacks', 'Special Items'];
-        if (req.query.category && allowedCategories.includes(req.query.category)) {
-            filter.category = req.query.category;
-        }
-        const allowedMenuTypes = ['Veg', 'Non-Veg', 'Both'];
-        if (req.query.menuType && allowedMenuTypes.includes(req.query.menuType)) {
-            filter.menuType = req.query.menuType;
-        }
-        if (req.query.isVegetarian !== undefined) filter.isVegetarian = req.query.isVegetarian === 'true';
-        if (req.query.isAvailable !== undefined) filter.isAvailable = req.query.isAvailable === 'true';
-        if (req.query.maxPrice) {
-            const maxPrice = parseInt(req.query.maxPrice);
-            if (!isNaN(maxPrice) && maxPrice > 0) filter.price = { $lte: maxPrice };
-        }
-
-        const menuItems = await MenuItem.find(filter)
-            .sort({ category: 1, price: 1 })
-            .skip(skip)
-            .limit(limit);
-
-        const total = await MenuItem.countDocuments(filter);
+        const { page, limit, skip } = pagination.getPagination(req.query);
+        const filter = services.menu.buildMenuFilter(req.query);
+        const { menuItems, total } = await services.menu.getMenuItems(filter, { page, limit, skip });
+        const paginationMeta = pagination.buildPaginationMeta(total, page, limit);
 
         res.json({
             success: true,
             data: menuItems,
-            pagination: {
-                currentPage: page,
-                totalPages: Math.ceil(total / limit),
-                totalItems: total,
-                itemsPerPage: limit
-            }
+            pagination: paginationMeta
         });
     } catch (error) {
         next(error);
@@ -49,7 +22,7 @@ exports.getAllMenuItems = async (req, res, next) => {
 // Get single menu item by ID
 exports.getMenuItemById = async (req, res, next) => {
     try {
-        const menuItem = await MenuItem.findById(req.params.id);
+        const menuItem = await services.menu.getMenuItemById(req.params.id);
 
         if (!menuItem) {
             return res.status(404).json({
@@ -70,8 +43,7 @@ exports.getMenuItemById = async (req, res, next) => {
 // Create new menu item
 exports.createMenuItem = async (req, res, next) => {
     try {
-        const newMenuItem = new MenuItem(req.body);
-        await newMenuItem.save();
+        const newMenuItem = await services.menu.createMenuItem(req.body);
 
         res.status(201).json({
             success: true,
@@ -86,11 +58,7 @@ exports.createMenuItem = async (req, res, next) => {
 // Update menu item by ID
 exports.updateMenuItem = async (req, res, next) => {
     try {
-        const menuItem = await MenuItem.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true, runValidators: true }
-        );
+        const menuItem = await services.menu.updateMenuItem(req.params.id, req.body);
 
         if (!menuItem) {
             return res.status(404).json({
@@ -112,7 +80,7 @@ exports.updateMenuItem = async (req, res, next) => {
 // Delete menu item by ID
 exports.deleteMenuItem = async (req, res, next) => {
     try {
-        const menuItem = await MenuItem.findByIdAndDelete(req.params.id);
+        const menuItem = await services.menu.deleteMenuItem(req.params.id);
 
         if (!menuItem) {
             return res.status(404).json({
@@ -133,7 +101,7 @@ exports.deleteMenuItem = async (req, res, next) => {
 // Get menu categories
 exports.getCategories = async (req, res, next) => {
     try {
-        const categories = await MenuItem.distinct('category');
+        const categories = await services.menu.getCategories();
         res.json({
             success: true,
             data: categories

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,9 +6,9 @@ const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const errorHandler = require('./middleware/errorHandler');
 const path = require('path');
+const config = require('./config');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Security middleware
 app.use(helmet({
@@ -19,8 +18,8 @@ app.use(helmet({
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+    windowMs: config.rateLimitWindowMs,
+    max: config.rateLimitMaxRequests,
     message: {
         success: false,
         message: 'Too many requests from this IP, please try again later.'
@@ -34,27 +33,30 @@ app.use('/api', limiter);
 
 // Middleware
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+    origin: config.allowedOrigins,
     credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // NoSQL injection protection
-app.use(mongoSanitize());
+app.use((req, res, next) => {
+    if (req.body) {
+        mongoSanitize.sanitize(req.body);
+    }
+
+    if (req.params) {
+        mongoSanitize.sanitize(req.params);
+    }
+
+    next();
+});
 
 // Serve static files from public directory only
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-    console.error("Error: MONGODB_URI is not defined in .env file");
-    process.exit(1);
-}
-
-mongoose.connect(MONGODB_URI)
+mongoose.connect(config.mongoUri)
     .then(() => console.log('✅ Connected to MongoDB'))
     .catch(err => {
         console.error('❌ MongoDB connection error:', err);
@@ -111,9 +113,9 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // Start Server
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📊 API Documentation: http://localhost:${PORT}/api`);
+app.listen(config.port, () => {
+    console.log(`🚀 Server running on http://localhost:${config.port}`);
+    console.log(`📊 API Documentation: http://localhost:${config.port}/api`);
 });
 
 module.exports = app;

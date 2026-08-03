@@ -108,6 +108,7 @@ Content-Type: application/json
   "phone": "+91 9876543210",
   "eventType": "Wedding",
   "guests": 300,
+  "venue": "Grand Ballroom, Mumbai",
   "date": "2026-06-20",
   "requests": "Pure vegetarian menu"
 }
@@ -137,6 +138,8 @@ Content-Type: application/json
 **Event Types:** Wedding · Corporate Event · Birthday Party · Anniversary · Private Party
 
 **Booking Status:** `Pending` → `Confirmed` → `Completed` · `Cancelled`
+
+**Booking Fields:** name, email, phone, eventType, guests, venue, date, requests
 
 **Menu Categories:** Appetizers · Main Course · Breads & Rice · Desserts · Beverages
 
