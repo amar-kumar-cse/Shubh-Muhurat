@@ -24,6 +24,7 @@
   "type": "commonjs",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
@@ -32,7 +33,11 @@
     "helmet": "^8.3.0",
     "joi": "^18.2.3",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.1.1"
+    "mongoose": "^9.1.1",
+    "multer": "^2.2.0",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^9.0.3",
+    "razorpay": "^2.9.8"
   },
   "devDependencies": {
     "jest": "^30.4.2",

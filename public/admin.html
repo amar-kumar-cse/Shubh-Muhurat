@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubh Muhurat Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ea961a',
+                            blue: '#008ccf',
+                            green: '#6db33f',
+                            red: '#e12729'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Playfair Display', 'serif'],
+                        body: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="font-body bg-slate-950 text-slate-100 min-h-screen">
+    <main class="min-h-screen">
+        <section class="max-w-7xl mx-auto px-4 py-10">
+            <div class="grid gap-6 lg:grid-cols-[320px_1fr]">
+                <aside class="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-xl">
+                    <h1 class="font-heading text-3xl font-black mb-2">Shubh Muhurat</h1>
+                    <p class="text-slate-400 text-sm mb-6">Admin dashboard for bookings, menu, testimonials, and inbox.</p>
+
+                    <div id="login-panel" class="space-y-3">
+                        <input id="admin-username" type="text" placeholder="Username" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-white/10">
+                        <input id="admin-password" type="password" placeholder="Password" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-white/10">
+                        <button id="login-btn" class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-red font-semibold">Sign In</button>
+                    </div>
+
+                    <div id="session-panel" class="hidden space-y-3">
+                        <p class="text-sm text-slate-300">Signed in as <span id="admin-label" class="font-semibold">admin</span></p>
+                        <button id="logout-btn" class="w-full px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15">Logout</button>
+                    </div>
+                </aside>
+
+                <section class="space-y-6">
+                    <div class="grid gap-4 md:grid-cols-4">
+                        <div class="bg-white text-slate-900 rounded-3xl p-5 shadow-lg"><div class="text-xs uppercase tracking-widest text-slate-500">Bookings</div><div id="booking-count" class="text-3xl font-black mt-2">0</div></div>
+                        <div class="bg-white text-slate-900 rounded-3xl p-5 shadow-lg"><div class="text-xs uppercase tracking-widest text-slate-500">Menu Items</div><div id="menu-count" class="text-3xl font-black mt-2">0</div></div>
+                        <div class="bg-white text-slate-900 rounded-3xl p-5 shadow-lg"><div class="text-xs uppercase tracking-widest text-slate-500">Testimonials</div><div id="testimonial-count" class="text-3xl font-black mt-2">0</div></div>
+                        <div class="bg-white text-slate-900 rounded-3xl p-5 shadow-lg"><div class="text-xs uppercase tracking-widest text-slate-500">Inquiries</div><div id="inquiry-count" class="text-3xl font-black mt-2">0</div></div>
+                    </div>
+
+                    <div class="grid gap-6 xl:grid-cols-2">
+                        <div class="bg-white rounded-3xl p-6 text-slate-900">
+                            <h2 class="font-heading text-2xl font-bold mb-4">Bookings</h2>
+                            <div id="bookings-list" class="space-y-3 text-sm"></div>
+                        </div>
+                        <div class="bg-white rounded-3xl p-6 text-slate-900">
+                            <h2 class="font-heading text-2xl font-bold mb-4">Menu</h2>
+                            <form id="menu-form" class="grid gap-3 md:grid-cols-2 mb-4">
+                                <input name="name" placeholder="Item name" class="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <input name="price" type="number" placeholder="Price" class="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <input name="category" placeholder="Category" class="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <input name="menuType" placeholder="Menu type" class="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <textarea name="description" placeholder="Description" class="md:col-span-2 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200"></textarea>
+                                <button class="md:col-span-2 px-4 py-3 rounded-xl bg-brand-orange text-white font-semibold">Create Menu Item</button>
+                            </form>
+                            <div id="menu-list" class="space-y-3 text-sm"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-6 xl:grid-cols-2">
+                        <div class="bg-white rounded-3xl p-6 text-slate-900">
+                            <h2 class="font-heading text-2xl font-bold mb-4">Testimonials</h2>
+                            <div id="testimonial-list" class="space-y-3 text-sm"></div>
+                        </div>
+                        <div class="bg-white rounded-3xl p-6 text-slate-900">
+                            <h2 class="font-heading text-2xl font-bold mb-4">Contact Inbox</h2>
+                            <div id="inquiry-list" class="space-y-3 text-sm"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -56,16 +56,15 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
-mongoose.connect(config.mongoUri)
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => {
-        console.error('❌ MongoDB connection error:', err);
-        process.exit(1);
-    });
+const connectDatabase = async () => {
+    await mongoose.connect(config.mongoUri);
+    console.log('✅ Connected to MongoDB');
+};
 
 // Import Routes
 const bookingRoutes = require('./routes/bookings');
 const menuRoutes = require('./routes/menu');
+const quoteRoutes = require('./routes/quotes');
 const testimonialRoutes = require('./routes/testimonials');
 const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
@@ -74,6 +73,7 @@ const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/quotes', quoteRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/contact', contactRoutes);
 
@@ -95,6 +95,7 @@ app.get('/api', (req, res) => {
         endpoints: {
             bookings: '/api/bookings',
             menu: '/api/menu',
+            quotes: '/api/quotes',
             testimonials: '/api/testimonials',
             contact: '/api/contact'
         }
@@ -112,10 +113,19 @@ app.use((req, res) => {
 // Error handling middleware (should be last)
 app.use(errorHandler);
 
-// Start Server
-app.listen(config.port, () => {
-    console.log(`🚀 Server running on http://localhost:${config.port}`);
-    console.log(`📊 API Documentation: http://localhost:${config.port}/api`);
-});
+// Start Server only when executed directly
+if (require.main === module) {
+    connectDatabase()
+        .then(() => {
+            app.listen(config.port, () => {
+                console.log(`🚀 Server running on http://localhost:${config.port}`);
+                console.log(`📊 API Documentation: http://localhost:${config.port}/api`);
+            });
+        })
+        .catch(err => {
+            console.error('❌ MongoDB connection error:', err);
+            process.exit(1);
+        });
+}
 
 module.exports = app;

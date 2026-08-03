@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Testimonial = require('../models/Testimonial');
 const { eventTypes } = require('../constants');
 const { pick } = require('../utils');
@@ -7,6 +8,10 @@ const updateFields = ['isApproved', 'isFeatured'];
 
 exports.getTestimonials = async (filters, pagination) => {
     const { page, limit, skip } = pagination;
+
+    if (mongoose.connection.readyState !== 1) {
+        return { testimonials: [], total: 0 };
+    }
     
     const testimonials = await Testimonial.find(filters)
         .sort({ isFeatured: -1, rating: -1, createdAt: -1 })
@@ -20,6 +25,10 @@ exports.getTestimonials = async (filters, pagination) => {
 };
 
 exports.getTestimonialById = async (id) => {
+    if (mongoose.connection.readyState !== 1) {
+        return null;
+    }
+
     return await Testimonial.findById(id);
 };
 
@@ -41,6 +50,10 @@ exports.deleteTestimonial = async (id) => {
 };
 
 exports.getAverageRating = async () => {
+    if (mongoose.connection.readyState !== 1) {
+        return { averageRating: 0, totalReviews: 0 };
+    }
+
     const result = await Testimonial.aggregate([
         { $match: { isApproved: true } },
         {

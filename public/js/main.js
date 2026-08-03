@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const state = {
     currentMenuType: 'Birthday Menu',
-    categories: []
+    categories: [],
+    selectedBookingDate: ''
 };
 
 function initApp() {
@@ -246,6 +247,8 @@ function setupForms() {
     // Booking Form
     const bookingForm = document.getElementById('booking-form');
     if (bookingForm) {
+        initBookingAvailability(bookingForm);
+
         bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitBtn = bookingForm.querySelector('button[type="submit"]');
@@ -281,6 +284,86 @@ function setupForms() {
             }
         });
     }
+}
+
+async function initBookingAvailability(bookingForm) {
+    const calendarContainer = document.getElementById('booking-availability');
+    const dateInput = bookingForm.querySelector('input[name="date"]');
+
+    if (!calendarContainer || !dateInput || typeof API === 'undefined') {
+        return;
+    }
+
+    const renderCalendar = async (monthDate) => {
+        const year = monthDate.getFullYear();
+        const monthIndex = monthDate.getMonth();
+        const monthKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+        let bookedDates = [];
+
+        try {
+            const result = await API.getBookingAvailability(monthKey);
+            bookedDates = (result.data.bookedDates || []).map(item => new Date(item.date).toISOString().slice(0, 10));
+        } catch (error) {
+            bookedDates = [];
+        }
+
+        const firstDay = new Date(year, monthIndex, 1);
+        const lastDay = new Date(year, monthIndex + 1, 0);
+        const startOffset = firstDay.getDay();
+        const totalCells = Math.ceil((startOffset + lastDay.getDate()) / 7) * 7;
+        const cells = [];
+
+        for (let cellIndex = 0; cellIndex < totalCells; cellIndex += 1) {
+            const dayNumber = cellIndex - startOffset + 1;
+            if (cellIndex < startOffset || dayNumber > lastDay.getDate()) {
+                cells.push('<div class="h-10 rounded-lg bg-gray-100"></div>');
+                continue;
+            }
+
+            const isoDate = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
+            const isBusy = bookedDates.includes(isoDate);
+            const isSelected = dateInput.value === isoDate;
+            cells.push(`
+                <button type="button" data-date="${isoDate}" class="h-10 rounded-lg text-sm font-semibold border transition-all ${isBusy ? 'bg-red-100 text-red-700 border-red-200 cursor-not-allowed' : isSelected ? 'bg-brand-orange text-white border-brand-orange' : 'bg-white text-gray-700 border-gray-200 hover:bg-orange-50'}">
+                    ${dayNumber}
+                </button>
+            `);
+        }
+
+        calendarContainer.innerHTML = `
+            <div class="flex items-center justify-between mb-3">
+                <button type="button" data-nav="prev" class="px-3 py-1 rounded-lg border border-gray-200 bg-white hover:bg-gray-50">Prev</button>
+                <h4 class="font-bold text-gray-900">${monthDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h4>
+                <button type="button" data-nav="next" class="px-3 py-1 rounded-lg border border-gray-200 bg-white hover:bg-gray-50">Next</button>
+            </div>
+            <div class="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-gray-500 mb-2">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div class="grid grid-cols-7 gap-2">${cells.join('')}</div>
+            <p class="mt-3 text-xs text-gray-500">Red dates are busy and cannot be selected.</p>
+        `;
+
+        calendarContainer.querySelectorAll('button[data-date]').forEach((button) => {
+            button.addEventListener('click', () => {
+                if (button.disabled || button.classList.contains('cursor-not-allowed')) {
+                    return;
+                }
+                dateInput.value = button.dataset.date;
+                state.selectedBookingDate = button.dataset.date;
+                renderCalendar(monthDate);
+            });
+        });
+
+        calendarContainer.querySelector('button[data-nav="prev"]').addEventListener('click', () => {
+            renderCalendar(new Date(year, monthIndex - 1, 1));
+        });
+
+        calendarContainer.querySelector('button[data-nav="next"]').addEventListener('click', () => {
+            renderCalendar(new Date(year, monthIndex + 1, 1));
+        });
+    };
+
+    await renderCalendar(new Date());
 }
 
 // Expose functions globally

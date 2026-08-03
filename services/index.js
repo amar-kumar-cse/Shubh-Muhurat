@@ -3,5 +3,6 @@ module.exports = {
     menu: require('./menuService'),
     contact: require('./contactService'),
     testimonial: require('./testimonialService'),
-    auth: require('./authService')
+    auth: require('./authService'),
+    quote: require('./quoteService')
 };

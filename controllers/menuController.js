@@ -5,14 +5,42 @@ const { pagination } = require('../utils');
 exports.getAllMenuItems = async (req, res, next) => {
     try {
         const { page, limit, skip } = pagination.getPagination(req.query);
-        const filter = services.menu.buildMenuFilter(req.query);
-        const { menuItems, total } = await services.menu.getMenuItems(filter, { page, limit, skip });
+        const { menuItems, total } = await services.menu.searchMenu(req.query, { page, limit, skip });
         const paginationMeta = pagination.buildPaginationMeta(total, page, limit);
 
         res.json({
             success: true,
             data: menuItems,
             pagination: paginationMeta
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Upload menu image
+exports.uploadMenuImage = async (req, res, next) => {
+    try {
+        if (!req.file || !req.file.path) {
+            return res.status(400).json({
+                success: false,
+                message: 'Image file is required'
+            });
+        }
+
+        const menuItem = await services.menu.updateMenuItem(req.params.id, { image: req.file.path });
+
+        if (!menuItem) {
+            return res.status(404).json({
+                success: false,
+                message: 'Menu item not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Menu image uploaded successfully',
+            data: menuItem
         });
     } catch (error) {
         next(error);

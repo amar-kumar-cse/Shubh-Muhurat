@@ -40,6 +40,38 @@ exports.getBookingById = async (req, res, next) => {
     }
 };
 
+// Get availability for a month
+exports.getAvailability = async (req, res, next) => {
+    try {
+        const data = await services.booking.getAvailability(req.query.month);
+
+        res.json({
+            success: true,
+            data
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Track booking publicly
+exports.trackBooking = async (req, res, next) => {
+    try {
+        const booking = await services.booking.getBookingByTrackingCode(req.params.trackingCode);
+
+        if (!booking) {
+            return res.status(404).json({
+                success: false,
+                message: 'Booking not found'
+            });
+        }
+
+        res.json({ success: true, data: booking });
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Create new booking
 exports.createBooking = async (req, res, next) => {
     try {

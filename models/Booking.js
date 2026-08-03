@@ -65,6 +65,24 @@ const bookingSchema = new mongoose.Schema({
     totalAmount: {
         type: Number,
         min: 0
+    },
+    trackingCode: {
+        type: String,
+        unique: true,
+        sparse: true,
+        trim: true
+    },
+    quoteId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Quote'
+    },
+    depositAmount: {
+        type: Number,
+        min: 0
+    },
+    paymentLink: {
+        type: String,
+        trim: true
     }
 }, {
     timestamps: true

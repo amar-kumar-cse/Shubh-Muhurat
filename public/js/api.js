@@ -37,6 +37,59 @@ const API = {
         }
     },
 
+    getMenuById: async (id) => {
+        const response = await fetch(`${API_BASE_URL}/menu/${id}`);
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    createMenuItem: async (data, token) => {
+        const response = await fetch(`${API_BASE_URL}/menu`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    updateMenuItem: async (id, data, token) => {
+        const response = await fetch(`${API_BASE_URL}/menu/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    deleteMenuItem: async (id, token) => {
+        const response = await fetch(`${API_BASE_URL}/menu/${id}`, {
+            method: 'DELETE',
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    uploadMenuImage: async (id, file, token) => {
+        const formData = new FormData();
+        formData.append('image', file);
+        const response = await fetch(`${API_BASE_URL}/menu/${id}/image`, {
+            method: 'POST',
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            body: formData
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
     // Testimonials
     getTestimonials: async (params = {}) => {
         try {
@@ -115,6 +168,106 @@ const API = {
             };
         }
     }
+
+    getBookingAvailability: async (month) => {
+        const response = await fetch(`${API_BASE_URL}/bookings/availability?month=${encodeURIComponent(month)}`);
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    trackBooking: async (trackingCode) => {
+        const response = await fetch(`${API_BASE_URL}/bookings/track/${encodeURIComponent(trackingCode)}`);
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    getBookings: async (params = {}, token) => {
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`${API_BASE_URL}/bookings?${queryString}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    updateBooking: async (id, data, token) => {
+        const response = await fetch(`${API_BASE_URL}/bookings/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
 };
 
-window.API = API; // Expose globally
+    getContactInquiries: async (params = {}, token) => {
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`${API_BASE_URL}/contact?${queryString}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    updateContactInquiry: async (id, data, token) => {
+        const response = await fetch(`${API_BASE_URL}/contact/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    // Testimonials admin
+    getTestimonialsAdmin: async (params = {}, token) => {
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(`${API_BASE_URL}/testimonials/admin?${queryString}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    updateTestimonial: async (id, data, token) => {
+        const response = await fetch(`${API_BASE_URL}/testimonials/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    },
+
+    // Auth
+    login: async (username, password) => {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        if (!response.ok) throw new Error('Invalid credentials');
+        return await response.json();
+    },
+
+    // Quotes
+    createQuoteEstimate: async (data) => {
+        const response = await fetch(`${API_BASE_URL}/quotes/estimate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) throw new Error('API Error');
+        return await response.json();
+    }
+    ,submitInquiry: async (data) => {

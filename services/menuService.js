@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const MenuItem = require('../models/MenuItem');
 const { menuCategories, menuType } = require('../constants');
 const { pick } = require('../utils');
@@ -7,6 +8,10 @@ const updateFields = [...createFields];
 
 exports.getMenuItems = async (filters, pagination) => {
     const { page, limit, skip } = pagination;
+
+    if (mongoose.connection.readyState !== 1) {
+        return { menuItems: [], total: 0 };
+    }
     
     const menuItems = await MenuItem.find(filters)
         .sort({ category: 1, price: 1 })
@@ -19,7 +24,26 @@ exports.getMenuItems = async (filters, pagination) => {
 };
 
 exports.getMenuItemById = async (id) => {
+    if (mongoose.connection.readyState !== 1) {
+        return null;
+    }
+
     return await MenuItem.findById(id);
+};
+
+exports.searchMenu = async (query, pagination) => {
+    const filter = exports.buildMenuFilter(query);
+
+    if (query.search) {
+        filter.$or = [
+            { name: { $regex: query.search.trim(), $options: 'i' } },
+            { description: { $regex: query.search.trim(), $options: 'i' } },
+            { category: { $regex: query.search.trim(), $options: 'i' } },
+            { menuType: { $regex: query.search.trim(), $options: 'i' } }
+        ];
+    }
+
+    return exports.getMenuItems(filter, pagination);
 };
 
 exports.createMenuItem = async (menuData) => {
@@ -40,6 +64,10 @@ exports.deleteMenuItem = async (id) => {
 };
 
 exports.getCategories = async () => {
+    if (mongoose.connection.readyState !== 1) {
+        return [];
+    }
+
     return await MenuItem.distinct('category');
 };
 
