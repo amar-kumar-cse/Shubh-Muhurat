@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found – Shubh Muhurat Caterer</title>
+    <meta name="description" content="The page you are looking for could not be found. Return to Shubh Muhurat Caterer's homepage.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --orange: #ea961a;
+            --dark:   #111827;
+            --mid:    #1f2937;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            color: #e5e7eb;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Decorative gradient blobs */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        body::before {
+            width: 600px; height: 600px;
+            background: var(--orange);
+            top: -150px; left: -150px;
+            animation: drift 8s ease-in-out infinite alternate;
+        }
+        body::after {
+            width: 500px; height: 500px;
+            background: #c2410c;
+            bottom: -150px; right: -150px;
+            animation: drift 10s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes drift {
+            from { transform: translate(0, 0); }
+            to   { transform: translate(40px, 40px); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 3.5rem 3rem;
+            max-width: 560px;
+            width: calc(100% - 2rem);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 2rem;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+            animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo / icon */
+        .icon-wrap {
+            width: 90px; height: 90px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--orange), #c2410c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(234,150,26,0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(234,150,26,0.4); }
+            50%       { box-shadow: 0 0 70px rgba(234,150,26,0.7); }
+        }
+
+        .err-code {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(5rem, 18vw, 7rem);
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--orange) 30%, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #f9fafb;
+            margin: 0.75rem 0 1rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #9ca3af;
+            line-height: 1.7;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.6rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), #c2410c);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(234,150,26,0.35);
+        }
+        .btn-primary:hover { box-shadow: 0 8px 30px rgba(234,150,26,0.5); }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.06);
+            color: #e5e7eb;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+        .divider {
+            width: 48px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), transparent);
+            border-radius: 9999px;
+            margin: 1rem auto;
+        }
+
+        footer-note {
+            display: block;
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" role="main">
+        <div class="icon-wrap" aria-hidden="true">
+            <i class="fas fa-utensils"></i>
+        </div>
+
+        <div class="err-code" aria-label="Error 404">404</div>
+
+        <div class="divider"></div>
+
+        <h1>Page Not Found</h1>
+
+        <p>
+            It seems this page wandered off — much like a lost spice in a busy kitchen!
+            The URL you visited does not exist or may have moved.
+        </p>
+
+        <div class="actions">
+            <a href="/" class="btn btn-primary" id="btn-home">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="/#booking" class="btn btn-ghost" id="btn-booking">
+                <i class="fas fa-calendar-check"></i> Book an Event
+            </a>
+        </div>
+
+        <footer-note>
+            © 2026 Shubh Muhurat Caterer · Bihar, India
+        </footer-note>
+    </div>
+
+</body>
+</html>

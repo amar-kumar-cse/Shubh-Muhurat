@@ -132,11 +132,20 @@ app.get('/api', (req, res) => {
     });
 });
 
-// 404 handler for undefined routes
+// 404 handler – JSON for /api/* routes, HTML page for everything else
 app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: 'API endpoint not found'
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({
+            success: false,
+            message: 'API endpoint not found'
+        });
+    }
+    // For page/asset 404s send the custom HTML page
+    res.status(404).sendFile(path.join(__dirname, 'public', '404.html'), (err) => {
+        if (err) {
+            // Fallback if 404.html doesn't exist yet
+            res.status(404).send('<h1>404 – Page Not Found</h1>');
+        }
     });
 });
 
