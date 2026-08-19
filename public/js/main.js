@@ -8,9 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const state = {
-    currentMenuType: 'Birthday Menu',
+    currentMenuType: 'Wedding Menu',
     categories: [],
     selectedBookingDate: ''
+};
+
+const MENU_PAGE_MAP = {
+    'Wedding Menu': 'public/wedding-menu.html',
+    'Engagement Menu': 'public/engagement-menu.html',
+    'Birthday Menu': 'public/birthday-menu.html',
+    'Anniversary Menu': 'public/anniversary-menu.html',
+    'Corporate Menu': 'public/corporate-menu.html',
+    'Private Party Menu': 'public/private-party-menu.html'
 };
 
 function initApp() {
@@ -19,7 +28,7 @@ function initApp() {
     setupScrollEffects();
     setupScrollReveal();
     setupCounterAnimation();
-    loadMenu('Birthday Menu');
+    loadMenu('Wedding Menu');
     loadTestimonials();
     setupForms();
 }
@@ -149,10 +158,20 @@ function setupCounterAnimation() {
 /* ========================
    Menu Loading
    ======================== */
-async function loadMenu(type = 'Birthday Menu') {
+async function loadMenu(type = 'Wedding Menu') {
     state.currentMenuType = type;
     const container = document.getElementById('menu-container');
     const tabButtons = document.querySelectorAll('.menu-tab');
+
+    // Update CTA button for dedicated page
+    const btnLink = document.getElementById('view-full-menu-btn');
+    const btnText = document.getElementById('view-full-menu-text');
+    if (btnLink && MENU_PAGE_MAP[type]) {
+        btnLink.href = MENU_PAGE_MAP[type];
+    }
+    if (btnText) {
+        btnText.textContent = `View Full ${type.replace(' Menu', '')} Menu with Pricing`;
+    }
 
     // Update Tabs
     tabButtons.forEach(btn => {

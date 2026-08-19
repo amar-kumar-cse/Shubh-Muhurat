@@ -282,7 +282,23 @@ const API = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
+    },
+
+    // ── DEDICATED MENU ITEMS ──────────────────────────────────────────────────
+    loadDedicatedMenu: async (eventType) => {
+        const response = await fetch(
+            `${API_BASE_URL}/menu?eventType=${encodeURIComponent(eventType)}&limit=50&isAvailable=true`
+        );
+        if (!response.ok) throw new Error('Failed to load menu items');
+        const data = await response.json();
+        return data.data || [];
     }
 };
 
+async function loadMenuItems(eventType) {
+    return await API.loadDedicatedMenu(eventType);
+}
+
 window.API = API;
+window.loadMenuItems = loadMenuItems;
+

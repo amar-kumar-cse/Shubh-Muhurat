@@ -74,12 +74,24 @@ exports.getCategories = async () => {
 exports.buildMenuFilter = (query) => {
     const filter = {};
     
-    if (query.category && menuCategories.ALL.includes(query.category)) {
-        filter.category = query.category;
+    if (query.category && query.category !== 'All') {
+        filter.category = new RegExp(`^${query.category.trim()}$`, 'i');
     }
     
-    if (query.menuType && menuType.ALL.includes(query.menuType)) {
-        filter.menuType = query.menuType;
+    if (query.eventType) {
+        const et = query.eventType.trim();
+        const base = et.replace(/ Menu$/i, '');
+        filter.$or = [
+            { menuType: new RegExp(`^${base}`, 'i') },
+            { menuType: new RegExp(et, 'i') }
+        ];
+    } else if (query.menuType) {
+        const mt = query.menuType.trim();
+        const base = mt.replace(/ Menu$/i, '');
+        filter.$or = [
+            { menuType: new RegExp(`^${base}`, 'i') },
+            { menuType: new RegExp(mt, 'i') }
+        ];
     }
     
     if (query.isVegetarian !== undefined) {

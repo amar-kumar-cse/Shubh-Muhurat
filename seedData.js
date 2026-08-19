@@ -71,8 +71,25 @@ const menuItems = [
     { name: 'Pink Sauce Pasta', category: 'Main Course', menuType: 'Anniversary Menu', price: 230, isVegetarian: true, description: 'Penne tossed in a blush rosé cream-tomato sauce with fresh basil', spiceLevel: 'Mild', preparationTime: 25, image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80' },
     { name: 'Mushroom Risotto', category: 'Main Course', menuType: 'Anniversary Menu', price: 260, isVegetarian: true, description: 'Creamy Italian Arborio rice with sautéed porcini mushrooms & parmesan', spiceLevel: 'Mild', preparationTime: 40, image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=800&q=80' },
     { name: 'Tiramisu', category: 'Dessert', menuType: 'Anniversary Menu', price: 220, isVegetarian: true, description: 'Espresso-soaked ladyfingers layered with mascarpone & cocoa', spiceLevel: 'None', preparationTime: 30, image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80' },
-    { name: 'Champagne Mocktail', category: 'Beverages', menuType: 'Anniversary Menu', price: 120, isVegetarian: true, description: 'Sparkling grape fizz with elderflower & a golden shimmer', spiceLevel: 'None', preparationTime: 5, image: 'https://images.unsplash.com/photo-1598460773998-cb8680d2830f?auto=format&fit=crop&w=800&q=80' },
-    { name: 'Cheese Fondue', category: 'Main Course', menuType: 'Anniversary Menu', price: 300, isVegetarian: true, description: 'Melted Gruyère & Emmental cheese pot with artisan bread dippers', spiceLevel: 'Mild', preparationTime: 20, image: 'https://images.unsplash.com/photo-1621262650393-27038e244d2d?auto=format&fit=crop&w=800&q=80' },
+    // ═══════════════════════════════════════════
+    // PRIVATE PARTY MENU
+    // ═══════════════════════════════════════════
+    { name: 'Loaded Nachos Grande', category: 'Snacks', menuType: 'Private Party Menu', price: 170, isVegetarian: true, description: 'Crisp tortilla chips baked with queso, jalapeños, salsa & sour cream', spiceLevel: 'Medium', preparationTime: 15, image: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=800&q=80' },
+    { name: 'BBQ Paneer Skewers', category: 'Starters', menuType: 'Private Party Menu', price: 190, isVegetarian: true, description: 'Char-grilled cottage cheese glazed with smoky hickory BBQ sauce', spiceLevel: 'Medium', preparationTime: 25, image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Crispy Corn Salt & Pepper', category: 'Snacks', menuType: 'Private Party Menu', price: 140, isVegetarian: true, description: 'Tender sweet corn golden-fried with crushed pepper and spring onions', spiceLevel: 'Medium', preparationTime: 15, image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Gourmet Sliders Trio', category: 'Main Course', menuType: 'Private Party Menu', price: 210, isVegetarian: true, description: 'Mini brioche sliders with pulled jackfruit, spiced paneer & cheese', spiceLevel: 'Mild', preparationTime: 20, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Sunset Mocktail Punch', category: 'Beverages', menuType: 'Private Party Menu', price: 95, isVegetarian: true, description: 'Tropical blend of orange, passion fruit, grenadine & sparkling fizz', spiceLevel: 'None', preparationTime: 5, image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Churros with Dulce de Leche', category: 'Desserts', menuType: 'Private Party Menu', price: 150, isVegetarian: true, description: 'Crisp Spanish cinnamon churros served with warm caramel dip', spiceLevel: 'None', preparationTime: 15, image: 'https://images.unsplash.com/photo-1624300629298-e9de39c13be5?auto=format&fit=crop&w=800&q=80' },
+
+    // ═══════════════════════════════════════════
+    // HOUSE WARMING MENU (Griha Pravesh)
+    // ═══════════════════════════════════════════
+    { name: 'Kesar Badam Kheer', category: 'Desserts', menuType: 'House Warming Menu', price: 120, isVegetarian: true, description: 'Traditional slow-cooked rice pudding enriched with saffron, almonds & pistachios', spiceLevel: 'None', preparationTime: 40, image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Satvik Paneer Makhana Curry', category: 'Main Course', menuType: 'House Warming Menu', price: 230, isVegetarian: true, description: 'Auspicious foxnut and soft paneer in aromatic cashew and tomato gravy without onion-garlic option', spiceLevel: 'Mild', preparationTime: 35, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Poori Chole & Halwa Platter', category: 'Main Course', menuType: 'House Warming Menu', price: 180, isVegetarian: true, description: 'Fluffy golden pooris served with tangy Amritsari chole and desi ghee sooji halwa', spiceLevel: 'Medium', preparationTime: 25, image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Crispy Moong Dal Pakoda', category: 'Snacks', menuType: 'House Warming Menu', price: 110, isVegetarian: true, description: 'Crunchy yellow lentil fritters served with fresh mint and tamarind chutneys', spiceLevel: 'Medium', preparationTime: 20, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Masala Shikanji & Thandai', category: 'Beverages', menuType: 'House Warming Menu', price: 80, isVegetarian: true, description: 'Chilled royal thandai with crushed dry fruits and fresh lemon shikanji', spiceLevel: 'None', preparationTime: 10, image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Motichoor Ladoo & Jalebi', category: 'Desserts', menuType: 'House Warming Menu', price: 100, isVegetarian: true, description: 'Desi ghee motichoor ladoos and piping hot crisp saffron jalebis', spiceLevel: 'None', preparationTime: 20, image: 'https://images.unsplash.com/photo-1666190077490-2d0041dd1583?auto=format&fit=crop&w=800&q=80' },
 ];
 
 // Sample Testimonials
@@ -143,7 +160,7 @@ const bookings = [
         eventType: 'Wedding',
         guests: 500,
         venue: 'Royal Orchid Banquet, Bangalore',
-        date: new Date('2026-03-15'),
+        date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         requests: 'Need both vegetarian and non-vegetarian options. Also require Jain food preparation.',
         status: 'Confirmed',
         totalAmount: 250000
@@ -155,7 +172,7 @@ const bookings = [
         eventType: 'Corporate Event',
         guests: 150,
         venue: 'Tech Park Conference Hall, Bangalore',
-        date: new Date('2026-02-20'),
+        date: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
         requests: 'Lunch buffet for office event. Prefer light and healthy options.',
         status: 'Pending',
         totalAmount: 45000
@@ -167,7 +184,7 @@ const bookings = [
         eventType: 'Birthday Party',
         guests: 80,
         venue: 'Mehta Residence, Ahmedabad',
-        date: new Date('2026-02-10'),
+        date: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
         requests: 'Kids-friendly menu required along with adult options.',
         status: 'Confirmed',
         totalAmount: 32000

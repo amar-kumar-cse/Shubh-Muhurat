@@ -1,9 +1,16 @@
+// constants/eventTypes.js
 module.exports = {
-    WEDDING: 'Wedding',
+    WEDDING:         'Wedding',
+    ENGAGEMENT:      'Engagement',
+    BIRTHDAY_PARTY:  'Birthday Party',
+    ANNIVERSARY:     'Anniversary',
     CORPORATE_EVENT: 'Corporate Event',
-    BIRTHDAY_PARTY: 'Birthday Party',
-    ANNIVERSARY: 'Anniversary',
-    PRIVATE_PARTY: 'Private Party',
-    OTHER: 'Other',
-    ALL: ['Wedding', 'Corporate Event', 'Birthday Party', 'Anniversary', 'Private Party', 'Other']
+    PRIVATE_PARTY:   'Private Party',
+    HOUSE_WARMING:   'House Warming',
+    OTHER:           'Other',
+    ALL: [
+        'Wedding', 'Engagement', 'Birthday Party',
+        'Anniversary', 'Corporate Event', 'Private Party',
+        'House Warming', 'Other'
+    ]
 };

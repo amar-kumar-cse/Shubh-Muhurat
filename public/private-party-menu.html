@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Party Menu | Shubh Muhurat Caterer</title>
+    <meta name="description"
+        content="Explore our Private Party catering menu — barbecue skewers, gourmet sliders, loaded nachos, cocktail bites, and sunset mocktails for terrace & home parties.">
+    <meta name="keywords" content="private party catering, cocktail party menu, house party caterer, barbecue skewer catering, Shubh Muhurat">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#ea961a',
+                            blue: '#008ccf',
+                            green: '#6db33f',
+                            red: '#e12729',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Playfair Display', 'serif'],
+                        body: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="font-body text-gray-800 bg-gray-50">
+
+    <!-- ========== SECTION 1: NAVBAR ========== -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-lg fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- LOGO AREA -->
+                <div class="flex-shrink-0 flex items-center gap-3 logo-container group cursor-pointer">
+                    <a href="../index.html" class="flex items-center gap-2">
+                        <img src="images/logo.png" alt="Shubh Muhurat Caterer Logo"
+                            class="h-20 w-auto object-contain transition-transform group-hover:scale-105"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="hidden items-center gap-2">
+                            <div class="w-12 h-12 bg-gradient-to-br from-brand-orange to-brand-red rounded-xl flex items-center justify-center">
+                                <i class="fas fa-utensils text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="font-heading text-xl font-bold text-gray-900 leading-tight block">Shubh Muhurat</span>
+                                <span class="text-xs text-brand-orange font-medium tracking-wider">CATERER</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 nav-links h-full">
+                    <a href="../index.html#home" class="nav-link text-gray-600 hover:text-brand-orange font-medium transition duration-300 relative">Home</a>
+                    <a href="../index.html#about" class="nav-link text-gray-600 hover:text-brand-orange font-medium transition duration-300 relative">About</a>
+                    <a href="../index.html#services" class="nav-link text-gray-600 hover:text-brand-orange font-medium transition duration-300 relative">Services</a>
+
+                    <div class="dropdown-container relative flex items-center h-full">
+                        <a href="#menu-grid" class="nav-link text-brand-orange font-bold transition duration-300 flex items-center gap-1 h-full">
+                            Menu <i class="fas fa-chevron-down text-xs dropdown-icon-animate"></i>
+                        </a>
+                        <div class="dropdown-menu w-64">
+                            <a href="wedding-menu.html" class="dropdown-item">
+                                <i class="fas fa-heart mr-2 text-brand-red"></i>Wedding Menu</a>
+                            <a href="engagement-menu.html" class="dropdown-item">
+                                <i class="fas fa-ring mr-2 text-brand-blue"></i>Engagement Menu</a>
+                            <a href="birthday-menu.html" class="dropdown-item">
+                                <i class="fas fa-birthday-cake mr-2 text-brand-orange"></i>Birthday Menu</a>
+                            <a href="anniversary-menu.html" class="dropdown-item">
+                                <i class="fas fa-gift mr-2 text-brand-green"></i>Anniversary Menu</a>
+                            <a href="corporate-menu.html" class="dropdown-item">
+                                <i class="fas fa-briefcase mr-2 text-brand-blue"></i>Corporate Menu</a>
+                            <a href="private-party-menu.html" class="dropdown-item bg-orange-50/60 font-bold text-brand-orange">
+                                <i class="fas fa-star mr-2 text-brand-orange"></i>Private Party Menu (Active)</a>
+                        </div>
+                    </div>
+
+                    <a href="../index.html#testimonials" class="nav-link text-gray-600 hover:text-brand-orange font-medium transition duration-300 relative">Reviews</a>
+
+                    <a href="../index.html#contact"
+                        class="bg-gradient-to-r from-brand-orange to-red-500 text-white px-6 py-2.5 rounded-full font-bold hover:shadow-lg hover:shadow-orange-500/25 hover:scale-105 transition duration-300">Book
+                        Now</a>
+                    <a href="admin.html"
+                        class="border border-brand-orange text-brand-orange px-5 py-2.5 rounded-full font-bold hover:bg-orange-50 transition duration-300">Admin</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brand-orange focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="../index.html#home" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-orange hover:bg-orange-50">Home</a>
+                <a href="../index.html#about" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-orange hover:bg-orange-50">About</a>
+                <a href="../index.html#services" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-orange hover:bg-orange-50">Services</a>
+
+                <!-- Mobile Menu Dropdown -->
+                <div class="relative">
+                    <button id="mobile-menu-toggle-btn"
+                        class="w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-medium text-brand-orange bg-orange-50 focus:outline-none">
+                        <span class="font-bold">Our Menus</span>
+                        <i id="mobile-menu-arrow" class="fas fa-chevron-down text-xs transition-transform duration-300 rotate-180"></i>
+                    </button>
+                    <div class="mobile-dropdown-content show bg-gray-50 rounded-md">
+                        <a href="wedding-menu.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-brand-orange">💒 Wedding Menu</a>
+                        <a href="engagement-menu.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-brand-orange">💍 Engagement Menu</a>
+                        <a href="birthday-menu.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-brand-orange">🎂 Birthday Menu</a>
+                        <a href="anniversary-menu.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-brand-orange">🎁 Anniversary Menu</a>
+                        <a href="corporate-menu.html" class="block px-3 py-2 text-sm text-gray-600 hover:text-brand-orange">💼 Corporate Menu</a>
+                        <a href="private-party-menu.html" class="block px-3 py-2 text-sm font-bold text-brand-orange bg-orange-100/50">⭐ Private Party Menu (Active)</a>
+                    </div>
+                </div>
+
+                <a href="../index.html#testimonials" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-brand-orange hover:bg-orange-50">Reviews</a>
+                <a href="../index.html#contact" class="block px-3 py-3 rounded-md text-base font-bold text-brand-orange hover:bg-orange-50">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== SECTION 2: PAGE HERO BANNER ========== -->
+    <header class="relative min-h-[42vh] flex items-center justify-center text-white pt-24 pb-12 overflow-hidden"
+        style="background-image: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(234,150,26,0.5)), url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center;">
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80"></div>
+
+        <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <!-- Icon Badge -->
+            <div class="w-16 h-16 mx-auto mb-4 bg-brand-orange/90 rounded-2xl flex items-center justify-center shadow-xl shadow-orange-900/30 text-white text-2xl border border-white/20">
+                <i class="fas fa-star"></i>
+            </div>
+
+            <!-- Page Title -->
+            <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl font-black mb-3">
+                Private Party <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400">Catering Menu</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-white/85 max-w-2xl mx-auto font-light leading-relaxed mb-6">
+                Intimate terrace get-togethers & cocktail bashes with BBQ skewers, loaded nachos, gourmet sliders & handcrafted finger food platters.
+            </p>
+
+            <!-- Breadcrumbs -->
+            <nav class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2 rounded-full text-xs sm:text-sm font-medium border border-white/20 text-white/90">
+                <a href="../index.html" class="hover:text-brand-orange transition-colors"><i class="fas fa-home mr-1"></i>Home</a>
+                <i class="fas fa-chevron-right text-[10px] text-white/50"></i>
+                <a href="../index.html#services" class="hover:text-brand-orange transition-colors">Menus</a>
+                <i class="fas fa-chevron-right text-[10px] text-white/50"></i>
+                <span class="text-brand-orange font-bold">Private Party Menu</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========== SECTION 3: MENU ITEMS GRID ========== -->
+    <main id="menu-grid" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-brand-orange font-bold tracking-widest text-xs uppercase mb-2 block">Cocktail & House Party Specials</span>
+                <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-3">
+                    Explore Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-brand-red">Party Selection</span>
+                </h2>
+                <div class="w-20 h-1.5 bg-gradient-to-r from-brand-orange to-brand-red mx-auto mb-4 rounded-full"></div>
+                <p class="text-gray-600 max-w-xl mx-auto text-sm sm:text-base">BBQ skewers, cheesy finger foods, gourmet mini sliders, and refreshing party coolers.</p>
+
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap justify-center gap-2.5 mt-8" id="category-filter-tabs">
+                    <button class="filter-tab active px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 bg-brand-orange text-white shadow-md shadow-orange-500/20"
+                        data-category="All">
+                        All Items
+                    </button>
+                    <button class="filter-tab px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-orange-50 border border-gray-200"
+                        data-category="Starters">
+                        BBQ & Skewers
+                    </button>
+                    <button class="filter-tab px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-orange-50 border border-gray-200"
+                        data-category="Snacks">
+                        Loaded Nachos & Sliders
+                    </button>
+                    <button class="filter-tab px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-orange-50 border border-gray-200"
+                        data-category="Beverages">
+                        Party Coolers & Mocktails
+                    </button>
+                    <button class="filter-tab px-5 py-2 rounded-full font-semibold text-sm transition-all duration-300 bg-white text-gray-700 hover:bg-orange-50 border border-gray-200"
+                        data-category="Desserts">
+                        Mini Dessert Shots
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu Cards Container -->
+            <div id="dedicated-menu-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Skeletons -->
+                <div class="h-80 skeleton rounded-3xl"></div>
+                <div class="h-80 skeleton rounded-3xl"></div>
+                <div class="h-80 skeleton rounded-3xl"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== SECTION 4: BOOKING CTA STRIP ========== -->
+    <section class="py-16 bg-gradient-to-r from-brand-orange via-amber-600 to-rose-600 text-white relative overflow-hidden shadow-2xl">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-black/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div>
+                <span class="bg-white/20 text-white text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full inline-block mb-3">Custom Packages Available</span>
+                <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-black mb-3">Ready to Book Private Party Catering?</h2>
+                <p class="text-white/90 text-base sm:text-lg max-w-2xl font-light">Contact us for live BBQ setups, bartender mocktail bars, and small-batch party menus.</p>
+            </div>
+            <div class="flex-shrink-0">
+                <a href="../index.html#contact"
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-white text-brand-orange font-black text-lg rounded-full shadow-2xl hover:bg-gray-900 hover:text-white hover:scale-105 transition-all duration-300">
+                    <span>Book This Event</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 5: RELATED MENUS SECTION ========== -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-brand-orange font-bold tracking-widest text-xs uppercase mb-2 block">Venus Catering Style Connectivity</span>
+                <h3 class="font-heading text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Explore Other Menus</h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-brand-orange to-brand-red mx-auto mb-3 rounded-full"></div>
+                <p class="text-gray-500 text-sm">Discover specialized menus crafted for every milestone celebration.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Birthday -->
+                <a href="birthday-menu.html" class="service-card group bg-slate-50 hover:bg-orange-50/50 p-6 rounded-3xl border border-gray-100 hover:border-brand-orange/30 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 shadow-sm hover:shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-orange/10 text-brand-orange rounded-2xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 group-hover:bg-brand-orange group-hover:text-white transition-all">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <h4 class="font-heading text-xl font-bold text-gray-900 mb-2">Birthday Menu</h4>
+                        <p class="text-gray-500 text-xs leading-relaxed mb-4">Wood-fired pizzas, burger platters, shakes & chocolate fountain bars.</p>
+                    </div>
+                    <span class="text-brand-orange font-bold text-xs inline-flex items-center gap-1 group-hover:gap-2 transition-all">View Menu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                </a>
+
+                <!-- Wedding -->
+                <a href="wedding-menu.html" class="service-card group bg-slate-50 hover:bg-red-50/50 p-6 rounded-3xl border border-gray-100 hover:border-brand-red/30 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 shadow-sm hover:shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-red/10 text-brand-red rounded-2xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h4 class="font-heading text-xl font-bold text-gray-900 mb-2">Wedding Menu</h4>
+                        <p class="text-gray-500 text-xs leading-relaxed mb-4">Royal multi-course dining experiences with live counters & festive sweets.</p>
+                    </div>
+                    <span class="text-brand-red font-bold text-xs inline-flex items-center gap-1 group-hover:gap-2 transition-all">View Menu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                </a>
+
+                <!-- Corporate -->
+                <a href="corporate-menu.html" class="service-card group bg-slate-50 hover:bg-blue-50/50 p-6 rounded-3xl border border-gray-100 hover:border-brand-blue/30 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 shadow-sm hover:shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-blue/10 text-brand-blue rounded-2xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 group-hover:bg-brand-blue group-hover:text-white transition-all">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h4 class="font-heading text-xl font-bold text-gray-900 mb-2">Corporate Menu</h4>
+                        <p class="text-gray-500 text-xs leading-relaxed mb-4">Executive thalis, healthy breakfast croissants, conference lunch buffets & high tea.</p>
+                    </div>
+                    <span class="text-brand-blue font-bold text-xs inline-flex items-center gap-1 group-hover:gap-2 transition-all">View Menu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                </a>
+
+                <!-- Anniversary -->
+                <a href="anniversary-menu.html" class="service-card group bg-slate-50 hover:bg-green-50/50 p-6 rounded-3xl border border-gray-100 hover:border-brand-green/30 transition-all duration-300 flex flex-col justify-between hover:-translate-y-2 shadow-sm hover:shadow-xl">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-green/10 text-brand-green rounded-2xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 group-hover:bg-brand-green group-hover:text-white transition-all">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h4 class="font-heading text-xl font-bold text-gray-900 mb-2">Anniversary Menu</h4>
+                        <p class="text-gray-500 text-xs leading-relaxed mb-4">Gourmet Italian pastas, pink sauce risotto & red velvet celebratory courses.</p>
+                    </div>
+                    <span class="text-brand-green font-bold text-xs inline-flex items-center gap-1 group-hover:gap-2 transition-all">View Menu <i class="fas fa-arrow-right text-[10px]"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 6: FOOTER ========== -->
+    <footer class="bg-gray-900 text-white pt-16 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand Info -->
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-brand-orange to-brand-red rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div>
+                            <span class="font-heading text-xl font-bold block">Shubh Muhurat</span>
+                            <span class="text-xs text-brand-orange tracking-widest uppercase">Caterer</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Premium catering services making every occasion special with delicious memories and unforgettable flavors.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-brand-orange hover:text-white transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-gray-400 hover:bg-blue-500 hover:text-white transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold text-white text-lg mb-6 relative">
+                        Quick Links
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-brand-orange rounded-full -mb-2"></span>
+                    </h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="../index.html#home" class="hover:text-brand-orange hover:translate-x-1 transition-all inline-flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brand-orange/50"></i>Home</a></li>
+                        <li><a href="../index.html#about" class="hover:text-brand-orange hover:translate-x-1 transition-all inline-flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brand-orange/50"></i>About Us</a></li>
+                        <li><a href="../index.html#services" class="hover:text-brand-orange hover:translate-x-1 transition-all inline-flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brand-orange/50"></i>Services</a></li>
+                        <li><a href="../index.html#testimonials" class="hover:text-brand-orange hover:translate-x-1 transition-all inline-flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brand-orange/50"></i>Reviews</a></li>
+                        <li><a href="../index.html#contact" class="hover:text-brand-orange hover:translate-x-1 transition-all inline-flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-brand-orange/50"></i>Book Now</a></li>
+                    </ul>
+                </div>
+
+                <!-- Our Menus -->
+                <div>
+                    <h4 class="font-bold text-white text-lg mb-6 relative">
+                        Our Menus
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-brand-orange rounded-full -mb-2"></span>
+                    </h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="wedding-menu.html" class="hover:text-brand-orange transition-all inline-flex items-center gap-2"><i class="fas fa-heart text-xs text-brand-orange/50"></i>Wedding Menu</a></li>
+                        <li><a href="engagement-menu.html" class="hover:text-brand-orange transition-all inline-flex items-center gap-2"><i class="fas fa-ring text-xs text-brand-orange/50"></i>Engagement Menu</a></li>
+                        <li><a href="birthday-menu.html" class="hover:text-brand-orange transition-all inline-flex items-center gap-2"><i class="fas fa-birthday-cake text-xs text-brand-orange/50"></i>Birthday Menu</a></li>
+                        <li><a href="anniversary-menu.html" class="hover:text-brand-orange transition-all inline-flex items-center gap-2"><i class="fas fa-gift text-xs text-brand-orange/50"></i>Anniversary Menu</a></li>
+                        <li><a href="corporate-menu.html" class="hover:text-brand-orange transition-all inline-flex items-center gap-2"><i class="fas fa-briefcase text-xs text-brand-orange/50"></i>Corporate Menu</a></li>
+                        <li><a href="private-party-menu.html" class="text-brand-orange font-semibold transition-all inline-flex items-center gap-2"><i class="fas fa-star text-xs text-brand-orange"></i>Private Party Menu</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-white text-lg mb-6 relative">
+                        Contact Info
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-brand-orange rounded-full -mb-2"></span>
+                    </h4>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-user text-brand-orange"></i>
+                            Rakesh Kumar Yadav
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-brand-orange"></i>
+                            <a href="tel:+919835443652" class="hover:text-white transition-colors">+91 98354 43652</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-brand-orange"></i>
+                            <a href="mailto:rkyadav@gmail.com" class="hover:text-white transition-colors">rkyadav@gmail.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-map-marker-alt text-brand-orange"></i>
+                            Bihar, India
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">&copy; 2026 Shubh Muhurat Caterer. All rights reserved.</p>
+                <p class="text-gray-600 text-xs">Designed with <i class="fas fa-heart text-brand-red"></i> for every celebration</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/api.js"></script>
+    <script>
+        const EVENT_TYPE = 'Private Party';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDedicatedPage();
+        });
+
+        async function initDedicatedPage() {
+            setupNavbar();
+            setupFilterTabs();
+            await fetchAndRenderMenu();
+        }
+
+        function setupNavbar() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if (btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('open');
+                    const icon = btn.querySelector('i');
+                    if (menu.classList.contains('open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+
+            const toggleBtn = document.getElementById('mobile-menu-toggle-btn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const content = toggleBtn.nextElementSibling;
+                    const arrow = document.getElementById('mobile-menu-arrow');
+                    if (content) content.classList.toggle('show');
+                    if (arrow) arrow.classList.toggle('rotate-180');
+                });
+            }
+        }
+
+        async function fetchAndRenderMenu() {
+            const container = document.getElementById('dedicated-menu-container');
+            if (!container) return;
+
+            try {
+                const items = await window.loadMenuItems(EVENT_TYPE);
+                renderMenuCards(items);
+            } catch (err) {
+                console.error('Error fetching dedicated menu items:', err);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-gray-200 p-8 shadow-sm">
+                        <i class="fas fa-utensils text-4xl text-gray-300 mb-4 block"></i>
+                        <p class="text-gray-600 text-lg font-medium mb-4">Unable to load menu right now. Please try again or reach out to us directly.</p>
+                        <a href="../index.html#contact" class="inline-flex items-center gap-2 px-6 py-3 bg-brand-orange text-white font-bold rounded-full hover:bg-orange-600 transition-colors">
+                            Contact Us for Custom Menu <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function renderMenuCards(items) {
+            const container = document.getElementById('dedicated-menu-container');
+            if (!container) return;
+
+            if (!items || items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-dashed border-gray-300 p-8">
+                        <i class="fas fa-clock text-4xl text-brand-orange/60 mb-4 block"></i>
+                        <h4 class="font-heading text-2xl font-bold text-gray-800 mb-2">Menu Being Updated</h4>
+                        <p class="text-gray-500 max-w-md mx-auto mb-6">Our chef is curating special packages for this event. Contact us directly to get a tailored menu and custom price quote.</p>
+                        <a href="../index.html#contact" class="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold rounded-full shadow-lg hover:scale-105 transition-all">
+                            Book Custom Menu <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                const normCategory = normalizeCategory(item.category);
+                const placeholder = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+                const spiceBadge = item.spiceLevel && item.spiceLevel !== 'None' 
+                    ? `<span class="text-xs bg-orange-50 text-brand-orange px-2.5 py-1 rounded-full font-medium"><i class="fas fa-pepper-hot text-[10px] mr-1"></i>${item.spiceLevel}</span>`
+                    : '';
+
+                return `
+                    <div class="menu-card bg-white rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col group"
+                         data-category="${normCategory}"
+                         data-raw-category="${item.category || ''}"
+                         data-event="Private Party">
+                        
+                        <!-- Image Container -->
+                        <div class="h-56 bg-gray-100 overflow-hidden relative">
+                            <img src="${item.image || placeholder}" 
+                                 alt="${item.name}"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 loading="lazy"
+                                 onerror="this.src='${placeholder}'" />
+                            
+                            <!-- Badges -->
+                            <div class="absolute top-3 left-3 flex items-center gap-2 z-10">
+                                ${item.isVegetarian
+                                    ? '<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-green-100/90 text-green-800 backdrop-blur-sm shadow-sm border border-green-300/50"><i class="fas fa-leaf text-[10px] mr-1"></i>VEG</span>'
+                                    : '<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-red-100/90 text-red-800 backdrop-blur-sm shadow-sm border border-red-300/50"><i class="fas fa-drumstick-bite text-[10px] mr-1"></i>NON-VEG</span>'}
+                            </div>
+
+                            <span class="absolute bottom-3 left-3 px-3 py-1 text-xs font-bold rounded-full bg-black/60 text-white backdrop-blur-md">
+                                ${item.category || 'Party Special'}
+                            </span>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-heading text-xl font-bold text-gray-900 mb-1.5 group-hover:text-brand-orange transition-colors">${item.name}</h3>
+                                <p class="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">${item.description || 'Delicious freshly prepared dish, made with love.'}</p>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
+                                <span class="text-brand-orange font-bold text-lg">₹${item.price}<span class="text-xs text-gray-400 font-normal">/plate</span></span>
+                                ${spiceBadge}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function normalizeCategory(cat) {
+            if (!cat) return 'Special Items';
+            const c = cat.toLowerCase();
+            if (c.includes('appetizer') || c.includes('starter') || c.includes('skewer') || c.includes('bbq')) return 'Starters';
+            if (c.includes('snack') || c.includes('nacho') || c.includes('slider') || c.includes('finger')) return 'Snacks';
+            if (c.includes('beverage') || c.includes('drink') || c.includes('cooler') || c.includes('mocktail')) return 'Beverages';
+            if (c.includes('dessert') || c.includes('sweet') || c.includes('shot')) return 'Desserts';
+            return 'Special Items';
+        }
+
+        function setupFilterTabs() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+                    
+                    tabs.forEach(t => {
+                        t.classList.remove('active', 'bg-brand-orange', 'text-white', 'shadow-md', 'shadow-orange-500/20');
+                        t.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+                    });
+
+                    tab.classList.add('active', 'bg-brand-orange', 'text-white', 'shadow-md', 'shadow-orange-500/20');
+                    tab.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+
+                    const cards = document.querySelectorAll('.menu-card');
+                    cards.forEach(card => {
+                        if (category === 'All') {
+                            card.style.display = 'flex';
+                        } else {
+                            const cardCat = card.dataset.category;
+                            card.style.display = (cardCat === category) ? 'flex' : 'none';
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>

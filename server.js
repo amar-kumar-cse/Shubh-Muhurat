@@ -12,7 +12,19 @@ const config = require('./config');
 const app = express();
 
 // Security headers with Helmet and HSTS
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+            fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com", "data:"],
+            imgSrc: ["'self'", "data:", "https:", "http:", "blob:"],
+            connectSrc: ["'self'", "https:", "http:"]
+        }
+    },
+    crossOriginEmbedderPolicy: false
+}));
 app.use(helmet.hsts({
     maxAge: 31536000, // 1 year
     includeSubDomains: true,
@@ -80,8 +92,14 @@ app.use((req, res, next) => {
 // XSS input sanitization
 app.use('/api', sanitizeXSS);
 
-// Serve static files securely from public directory only
+// Serve static files securely from public directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Serve root index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // MongoDB Connection
 const connectDatabase = async () => {

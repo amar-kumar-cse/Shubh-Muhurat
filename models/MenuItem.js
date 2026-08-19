@@ -16,7 +16,7 @@ const menuItemSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Category is required'],
         enum: {
-            values: ['Appetizers', 'Main Course', 'Breads', 'Breads & Rice', 'Dessert', 'Desserts', 'Beverages', 'Accompaniments', 'Snacks', 'Salads', 'Lunch', 'Breakfast'],
+            values: ['Appetizers', 'Starters', 'Main Course', 'Breads', 'Breads & Rice', 'Dessert', 'Desserts', 'Beverages', 'Accompaniments', 'Snacks', 'Salads', 'Lunch', 'Breakfast', 'Special Items'],
             message: '{VALUE} is not a valid category'
         }
     },
@@ -24,7 +24,16 @@ const menuItemSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Menu type is required'],
         enum: {
-            values: ['Birthday Menu', 'Engagement Menu', 'Wedding Menu', 'Corporate Menu', 'Anniversary Menu'],
+            values: [
+                'Wedding', 'Wedding Menu',
+                'Engagement', 'Engagement Menu',
+                'Birthday Party', 'Birthday Menu',
+                'Anniversary', 'Anniversary Menu',
+                'Corporate Event', 'Corporate Menu',
+                'Private Party', 'Private Party Menu',
+                'House Warming', 'House Warming Menu',
+                'Other'
+            ],
             message: '{VALUE} is not a valid menu type'
         },
         default: 'Wedding Menu'
