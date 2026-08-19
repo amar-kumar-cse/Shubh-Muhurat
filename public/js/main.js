@@ -14,12 +14,13 @@ const state = {
 };
 
 const MENU_PAGE_MAP = {
-    'Wedding Menu': 'public/wedding-menu.html',
-    'Engagement Menu': 'public/engagement-menu.html',
-    'Birthday Menu': 'public/birthday-menu.html',
-    'Anniversary Menu': 'public/anniversary-menu.html',
-    'Corporate Menu': 'public/corporate-menu.html',
-    'Private Party Menu': 'public/private-party-menu.html'
+    'Wedding Menu': 'wedding-menu.html',
+    'Engagement Menu': 'engagement-menu.html',
+    'Birthday Menu': 'birthday-menu.html',
+    'Anniversary Menu': 'anniversary-menu.html',
+    'Corporate Menu': 'corporate-menu.html',
+    'Private Party Menu': 'private-party-menu.html',
+    'House Warming Menu': 'house-warming-menu.html'
 };
 
 function initApp() {
